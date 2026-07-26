@@ -311,7 +311,8 @@ body {
     flex-direction: column;
     background: var(--bg-color);
     padding: 20px 20px 150px 20px !important; /* Extra bottom padding so bottom content is never cut off by fixed nav */
-    overflow-y: auto;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
