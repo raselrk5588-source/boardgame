@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Arena - Splash Screen</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Cinzel:wght@600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for the crown icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Chess.js library for game logic -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="16guti.js?v=2"></script>
+    <script src="carrom.js?v=1"></script>
+    <script>
+        // Check for ?logout=1 or ?reset=1 in URL
+        if (window.location.search.includes("logout=1") || window.location.search.includes("reset=1")) {
+            localStorage.clear();
+            window.location.href = "auth/login.html";
+        }
+
+        // 1. Authentication check: redirect to landing page if not logged in
+        if (!localStorage.getItem("isLoggedIn")) {
+            window.location.href = "auth/login.html";
+        }
+
+        function showCustomConfirm(title, message, iconClass, btnBg, btnText, onConfirmCallback) {
+            let existingModal = document.getElementById("customConfirmModal");
+            if (existingModal) existingModal.remove();
+
+            const modalOverlay = document.createElement("div");
+            modalOverlay.id = "customConfirmModal";
+            modalOverlay.style.cssText = `
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(15, 23, 42, 0.88);
+                backdrop-filter: blur(12px);
+                z-index: 999999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                animation: fadeInModal 0.25s ease-out;
+            `;
+
+            const modalBox = document.createElement("div");
+            modalBox.style.cssText = `
+                background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 24px;
+                padding: 30px 24px 26px 24px;
+                max-width: 350px;
+                width: 100%;
+                text-align: center;
+                box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75);
+                transform: scale(0.95);
+                transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            `;
+
+            modalBox.innerHTML = `
+                <div style="width: 72px; height: 72px; background: rgba(239, 68, 68, 0.15); border: 2px solid #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px auto; box-shadow: 0 0 25px rgba(239, 68, 68, 0.3);">
+                    <i class="fas ${iconClass}" style="color: #ef4444; font-size: 32px;"></i>
+                </div>
+                <h3 style="color: #fff; font-size: 22px; font-weight: 700; margin-bottom: 10px;">${title}</h3>
+                <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6; margin-bottom: 26px;">
+                    ${message}
+                </p>
+                <div style="display: flex; gap: 12px; justify-content: center;">
+                    <button id="customConfirmCancelBtn" style="flex: 1; padding: 13px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); color: #fff; font-weight: 600; font-size: 15px; cursor: pointer;">
+                        না, ফিরে যান
+                    </button>
+                    <button id="customConfirmYesBtn" style="flex: 1; padding: 13px; border-radius: 14px; border: none; background: ${btnBg}; color: #fff; font-weight: 700; font-size: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35);">
+                        ${btnText}
+                    </button>
+                </div>
+            `;
+
+            modalOverlay.appendChild(modalBox);
+            document.body.appendChild(modalOverlay);
+
+            document.getElementById("customConfirmCancelBtn").addEventListener("click", () => {
+                modalOverlay.remove();
+            });
+
+            document.getElementById("customConfirmYesBtn").addEventListener("click", () => {
+                modalOverlay.remove();
+                if (typeof onConfirmCallback === "function") onConfirmCallback();
+            });
+        }
+
+        function handleLogout() {
+            showCustomConfirm(
+                "লগআউট",
+                "আপনি কি নিশ্চিত যে আপনার অ্যাকাউন্ট থেকে লগআউট করতে চান?<br><span style='color: #94a3b8; font-size: 13px;'>(লগআউট করলে ল্যান্ডিং পেজে ফিরে যাবে)</span>",
+                "fa-sign-out-alt",
+                "linear-gradient(135deg, #eab308, #ca8a04)",
+                "হ্যাঁ, লগআউট",
+                function() {
+                    localStorage.clear();
+                    window.location.href = "auth/login.html";
+                }
+            );
+        }
+
+        function handleUnsubscribe() {
+            showCustomConfirm(
+                "সাবস্ক্রিপশন বাতিল",
+                "আপনি কি নিশ্চিত যে আপনার সাবস্ক্রিপশন বাতিল করতে চান?<br><span style='color: #94a3b8; font-size: 13px;'>(বাতিল করলে ল্যান্ডিং পেজে ফিরে যাবে)</span>",
+                "fa-user-times",
+                "linear-gradient(135deg, #ef4444, #b91c1c)",
+                "হ্যাঁ, বাতিল করুন",
+                function() {
+                    localStorage.clear();
+                    window.location.href = "auth/login.html";
+                }
+            );
+        }
+
+        // 2. Dynamic profile application across ALL screens & games
+        window.CURRENT_USER_NAME = 'খেলোয়াড়';
+
+        window.applyUserProfile = function() {
+            try {
+                const profileStr = localStorage.getItem('29card_profile');
+                let name = 'খেলোয়াড়';
+                if (profileStr) {
+                    const prof = JSON.parse(profileStr);
+                    if (prof.name) name = prof.name;
+                }
+                window.CURRENT_USER_NAME = name;
+
+                const phone = localStorage.getItem('phone') || "01XXXXXXXXX";
+                const phoneSpan = document.getElementById("profileUserPhone");
+                if (phoneSpan) phoneSpan.innerText = "মোবাইল: " + phone;
+
+                // 1. Hub header & Profile screen header
+                const hubNameSpan = document.getElementById("hubUserName");
+                const profNameSpan = document.getElementById("profileUserName");
+                if (hubNameSpan) hubNameSpan.innerText = name;
+                if (profNameSpan) profNameSpan.innerText = name;
+
+                // 2. All user-name elements (Home screen, Online match screen, Leaderboard, etc.)
+                document.querySelectorAll(".user-name").forEach(el => {
+                    el.innerHTML = name + ' <i class="fas fa-flag text-green"></i>';
+                });
+
+                // 3. Chess game screen bottom player name (Me)
+                document.querySelectorAll(".bottom-player .player-name-game").forEach(el => {
+                    if (!el.innerText.includes("(কালো)") && !el.innerText.includes("(সাদা)")) {
+                        el.innerHTML = name + ' <i class="fas fa-flag text-green"></i>';
+                    }
+                });
+
+                // 4. 16 Guti bottom player name (Red/Me)
+                const gutiRed = document.getElementById("gutiRedPlayerName");
+                if (gutiRed) {
+                    gutiRed.innerHTML = name + ' <i class="fas fa-flag text-green"></i>';
+                }
+
+                // 5. Carrom player 1 name
+                const carromP1 = document.getElementById("carromPlayer1Name");
+                if (carromP1 && !carromP1.innerText.includes("PLAYER 2")) {
+                    carromP1.innerText = name + ' (সাদা)';
+                }
+
+                // 6. Update all user avatar images to use the logged in name initial!
+                const avatarUrl = "https://ui-avatars.com/api/?name=" + encodeURIComponent(name) + "&background=random";
+                document.querySelectorAll('img[src*="ui-avatars.com"]').forEach(img => {
+                    const altText = (img.alt || "").toLowerCase();
+                    if (altText === "user" || altText === "me" || altText === "profile" || (!altText.includes("bot") && !altText.includes("opponent"))) {
+                        img.src = avatarUrl;
+                    }
+                });
+            } catch(e) {
+                console.error("Error applying user profile:", e);
+            }
+        };
+
+        function toBanglaDigit(num) {
+            const bnDigits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+            return String(num).replace(/[0-9]/g, d => bnDigits[d]);
+        }
+
+        window.updateDashboardStats = function() {
+            try {
+                let stats = JSON.parse(localStorage.getItem('29card_user_stats') || 'null');
+                if (!stats || !stats.isRealReset4 || (stats.totalMatches === 24 && stats.wins === 18)) {
+                    stats = {
+                        isRealReset4: true,
+                        totalMatches: 0,
+                        wins: 0,
+                        chessLevel: 1,
+                        gutiWins: 0,
+                        carromWins: 0,
+                        points: 100
+                    };
+                    localStorage.setItem('29card_user_stats', JSON.stringify(stats));
+                }
+
+                function renderStatsToDOM(st) {
+                    const elTotal = document.getElementById("dashTotalMatches");
+                    const elWins = document.getElementById("dashWins");
+                    const elWinRate = document.getElementById("dashWinRate");
+                    const elRank = document.getElementById("dashGlobalRank");
+
+                    if (elTotal) elTotal.innerText = toBanglaDigit(st.totalMatches);
+                    if (elWins) elWins.innerText = toBanglaDigit(st.wins);
+                    
+                    const winRateVal = st.totalMatches > 0 ? Math.round((st.wins / Math.max(1, st.totalMatches)) * 100) : 0;
+                    if (elWinRate) elWinRate.innerText = toBanglaDigit(winRateVal) + "%";
+
+                    const myName = window.CURRENT_USER_NAME || "আপনি";
+                    let players = [
+                        { rank: 1, name: "সাকিব আল হাসান", points: 150, isMe: false },
+                        { rank: 2, name: "তামিম ইকবাল", points: 120, isMe: false },
+                        { rank: 3, name: `${myName} (নিজের অবস্থান)`, points: st.points, isMe: true }
+                    ];
+
+                    players.sort((a,b) => b.points - a.points);
+                    let myRankIdx = players.findIndex(p => p.isMe);
+                    let myRankNum = myRankIdx !== -1 ? (myRankIdx + 1) : 1;
+                    let myRankStr = "#" + toBanglaDigit(myRankNum);
+
+                    if (elRank) elRank.innerText = myRankStr;
+
+                    const hubBadge = document.querySelector("#hubScreen .rank-badge");
+                    if (hubBadge) hubBadge.innerHTML = `<i class="fas fa-crown" style="color: gold; margin-right: 4px;"></i> র‍্যাংক ${toBanglaDigit(myRankNum)}`;
+
+                    // Progress bars
+                    const elChessText = document.getElementById("dashChessText");
+                    const elChessBar = document.getElementById("dashChessBar");
+                    if (elChessText && elChessBar) {
+                        let chessPct = Math.max(0, Math.min(100, (st.chessLevel - 1) * 25));
+                        elChessText.innerText = `লেভেল ${toBanglaDigit(st.chessLevel)} (${toBanglaDigit(chessPct)}%)`;
+                        elChessBar.style.width = chessPct + "%";
+                    }
+
+                    const elGutiText = document.getElementById("dashGutiText");
+                    const elGutiBar = document.getElementById("dashGutiBar");
+                    if (elGutiText && elGutiBar) {
+                        let gutiPct = Math.max(0, Math.min(100, st.gutiWins * 20));
+                        elGutiText.innerText = `${toBanglaDigit(st.gutiWins)}টি ম্যাচ জয় (${toBanglaDigit(gutiPct)}%)`;
+                        elGutiBar.style.width = gutiPct + "%";
+                    }
+
+                    const elCarromText = document.getElementById("dashCarromText");
+                    const elCarromBar = document.getElementById("dashCarromBar");
+                    if (elCarromText && elCarromBar) {
+                        let carromPct = Math.max(0, Math.min(100, st.carromWins * 20));
+                        elCarromText.innerText = `${toBanglaDigit(st.carromWins)}টি ম্যাচ জয় (${toBanglaDigit(carromPct)}%)`;
+                        elCarromBar.style.width = carromPct + "%";
+                    }
+
+                    const elList = document.getElementById("dashLeaderboardList");
+                    if (elList) {
+                        elList.innerHTML = players.map((p, idx) => {
+                            const rStr = "#" + toBanglaDigit(idx + 1);
+                            const bgStyle = p.isMe ? 
+                                'background: rgba(234, 179, 8, 0.15); border: 1px solid rgba(234, 179, 8, 0.4);' : 
+                                'background: rgba(255,255,255,0.05);';
+                            const rankColor = idx === 0 ? 'gold' : (idx === 1 ? '#cbd5e1' : 'var(--gold-light)');
+                            return `
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; ${bgStyle} border-radius: 12px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="color: ${rankColor}; font-weight: bold;">${rStr}</span>
+                                    <span style="color: #fff; font-weight: 600;">${p.name}</span>
+                                </div>
+                                <span style="color: ${p.isMe ? 'var(--gold-light)' : '#10b981'}; font-weight: bold;">${toBanglaDigit(p.points)} pts</span>
+                            </div>`;
+                        }).join('');
+                    }
+                }
+
+                renderStatsToDOM(stats);
+
+                // Fetch real live stats from Firebase DB if connected
+                if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length && window.CURRENT_USER_NAME) {
+                    try {
+                        const db = firebase.database();
+                        const myName = window.CURRENT_USER_NAME || "আপনি";
+                        const userRef = db.ref('leaderboard/' + encodeURIComponent(myName));
+                        userRef.once('value').then(snap => {
+                            const data = snap.val();
+                            if (data && data.totalMatches !== undefined && !(data.totalMatches === 24 && data.wins === 18)) {
+                                stats.totalMatches = data.totalMatches || 0;
+                                stats.wins = data.wins || 0;
+                                stats.points = data.points || 100;
+                                stats.chessLevel = data.chessLevel || 1;
+                                stats.gutiWins = data.gutiWins || 0;
+                                stats.carromWins = data.carromWins || 0;
+                                localStorage.setItem('29card_user_stats', JSON.stringify(stats));
+                                renderStatsToDOM(stats);
+                            } else {
+                                stats.totalMatches = 0;
+                                stats.wins = 0;
+                                stats.points = 100;
+                                stats.chessLevel = 1;
+                                stats.gutiWins = 0;
+                                stats.carromWins = 0;
+                                localStorage.setItem('29card_user_stats', JSON.stringify(stats));
+                                renderStatsToDOM(stats);
+                                userRef.set({
+                                    name: myName,
+                                    points: 100,
+                                    wins: 0,
+                                    totalMatches: 0,
+                                    chessLevel: 1,
+                                    gutiWins: 0,
+                                    carromWins: 0
+                                });
+                            }
+                        });
+                    } catch(e) {}
+                }
+            } catch(err) {
+                console.error("Error updating dashboard stats:", err);
+            }
+        };
+
+        window.recordGameResult = function(gameType, isWin) {
+            try {
+                let stats = JSON.parse(localStorage.getItem('29card_user_stats') || 'null');
+                if (!stats || !stats.isRealReset4 || (stats.totalMatches === 24 && stats.wins === 18)) {
+                    stats = {
+                        isRealReset4: true,
+                        totalMatches: 0,
+                        wins: 0,
+                        chessLevel: 1,
+                        gutiWins: 0,
+                        carromWins: 0,
+                        points: 100
+                    };
+                }
+                stats.totalMatches++;
+                if (isWin) {
+                    stats.wins++;
+                    stats.points += 25;
+                    if (gameType === 'chess') stats.chessLevel = Math.min(10, stats.chessLevel + 1);
+                    if (gameType === 'guti') stats.gutiWins++;
+                    if (gameType === 'carrom') stats.carromWins++;
+                } else {
+                    stats.points += 5;
+                }
+                localStorage.setItem('29card_user_stats', JSON.stringify(stats));
+                if (typeof window.updateDashboardStats === 'function') {
+                    window.updateDashboardStats();
+                }
+            } catch(e) {}
+        };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            window.applyUserProfile();
+            if (typeof window.updateDashboardStats === 'function') window.updateDashboardStats();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="mobile-wrapper">
+        <!-- Game Hub Screen -->
+        <div class="app-screen hub-screen" id="hubScreen" style="display: flex; flex-direction: column; height: 100%; overflow-y: auto;">
+            <!-- Hub Header -->
+            <div class="hub-top-nav">
+                <div class="hub-user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Rashed+Khan&background=random" alt="User">
+                    <div class="hub-user-text">
+                        <small>স্বাগতম,</small>
+                        <span id="hubUserName">খেলোয়াড়</span>
+                    </div>
+                </div>
+                <div class="hub-actions" style="display: flex; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(245, 209, 121, 0.3); padding: 5px 12px; border-radius: 20px; font-size: 13px; color: var(--gold-light); font-weight: bold; white-space: nowrap;">
+                        <i class="fas fa-star" style="color: #a855f7;"></i>
+                        <span>র‍্যাংক ১২</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Banner -->
+            <div class="hub-hero">
+                <div class="hub-hero-content">
+                    <h2>বুদ্ধির লড়াই<br>শুরু হোক</h2>
+                    <p>আজই প্রতিপক্ষকে চ্যালেঞ্জ করুন</p>
+                    <button class="btn-play" onclick="startChessGame()">এখন খেলুন</button>
+                </div>
+            </div>
+
+            <!-- Section Title -->
+            <div class="hub-section-header">
+                <div class="hub-section-title">
+                    <i class="fas fa-gem"></i> আমাদের গেমস
+                </div>
+            </div>
+
+            <!-- Games Grid -->
+            <div class="hub-grid">
+                <div class="hub-card chess">
+                    <div class="hub-card-overlay"></div>
+                    <div class="hub-card-top">
+                        <div class="hub-card-icon"><i class="fas fa-chess-pawn"></i></div>
+                        <div class="hub-card-text">
+                            <h4>দাবা</h4>
+                            <p>অনলাইন • বট</p>
+                        </div>
+                    </div>
+                    <div class="hub-card-bottom">
+                        <button class="hub-card-btn" onclick="startChessGame()">খেলুন</button>
+                    </div>
+                </div>
+
+                <div class="hub-card guti" onclick="showScreen('gutiModesScreen')">
+                    <div class="hub-card-overlay"></div>
+                    <div class="hub-card-top">
+                        <div class="hub-card-icon"><i class="fas fa-bullseye"></i></div>
+                        <div class="hub-card-text">
+                            <h4>১৬ গুটি</h4>
+                            <p>অনলাইন • বট • লোকাল</p>
+                        </div>
+                    </div>
+                    <div class="hub-card-bottom">
+                        <button class="hub-card-btn" onclick="event.stopPropagation(); showScreen('gutiModesScreen')">খেলুন</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Width Carrom Card -->
+            <div class="hub-full-card carrom" style="background: url('carrom_bg.png') center/cover no-repeat; border-color: rgba(234, 179, 8, 0.4);" onclick="showScreen('carromModesScreen');">
+                <div class="hub-card-overlay" style="background: linear-gradient(to right, rgba(10,10,26,0.9) 0%, rgba(10,10,26,0.4) 50%, rgba(10,10,26,0.1) 100%);"></div>
+                <div class="hub-card-top" style="flex-direction: column; align-items: flex-start; justify-content: center; height: 100%; padding-left: 20px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
+                        <div class="hub-card-icon" style="color: #fff; background: #eab308; border: none;"><i class="fas fa-dot-circle"></i></div>
+                        <div class="hub-card-text">
+                            <h4>ক্যারম</h4>
+                            <p>অনলাইন • বট • লোকাল</p>
+                        </div>
+                    </div>
+                    <button class="hub-card-btn" style="width: auto; padding: 8px 20px; background: linear-gradient(135deg, #eab308, #ca8a04); color: #fff;" onclick="event.stopPropagation(); showScreen('carromModesScreen');">খেলুন</button>
+                </div>
+            </div>
+
+
+            
+            <div style="height: 80px;"></div> <!-- Bottom Nav Spacing -->
+        </div>
+
+        <div class="splash-container" id="splashScreen" style="display: none;">
+            <!-- Login Loading Overlay -->
+            <div class="loading-container" style="width: 85%; margin-bottom: 30px; text-align: center;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: var(--gold-light); margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));"></i>
+                <div class="loading-text" style="font-weight: 600; font-size: 16px; margin-bottom: 10px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">লগইন হচ্ছে...</div>
+                <div class="progress-bar-bg" style="width: 100%; height: 4px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
+                    <div class="progress-bar-fill"></div>
+                </div>
+            </div>
+        </div>
+
+    <!-- 16 Guti Game Screen (Matching Chess gameScreen design) -->
+    <div class="app-screen" id="gutiScreen" style="display: none; padding: 15px; overflow: hidden;">
+        <!-- Header -->
+        <div class="header" style="margin-top: 0; margin-bottom: 15px;">
+            <i class="fas fa-chevron-left back-button" onclick="showScreen('gutiModesScreen')"></i>
+            <h2 style="font-size: 18px;" id="gutiScreenTitle">১৬ গুটি</h2>
+        </div>
+
+        <!-- Top Player (Opponent/Green) -->
+        <div class="player-bar top-player">
+            <div class="player-info-game">
+                <div class="guti-avatar" id="gutiGreenAvatar" style="width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #00ff00, #008000); border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; margin-right: 2px;"><i class="fas fa-robot"></i></div>
+                <div style="display:flex; flex-direction: column;">
+                    <span class="player-name-game" id="gutiGreenPlayerName">সবুজ <i class="fas fa-robot" style="color:#9ca3af; font-size:12px;"></i></span>
+                    <span class="player-rating" id="gutiGreenSubtext">🤖 ১৬ গুটি বট</span>
+                </div>
+            </div>
+            <div style="background: rgba(0,0,0,0.5); padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 16px; color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                <span id="gutiScoreBlue">১৬ গুটি</span>
+            </div>
+        </div>
+
+        <!-- 16 Guti Board -->
+        <div class="guti-board-container" id="gutiBoardContainer">
+            <!-- SVG Board and HTML Pieces will be injected here by 16guti.js -->
+        </div>
+
+        <!-- Bottom Player (Me/Red) -->
+        <div class="player-bar bottom-player">
+            <div class="player-info-game">
+                <div class="guti-avatar" style="width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ff4d4d, #b30000); border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; margin-right: 2px;"><i class="fas fa-user"></i></div>
+                <div style="display:flex; flex-direction: column;">
+                    <span class="player-name-game" id="gutiRedPlayerName">লাল <i class="fas fa-flag text-green"></i></span>
+                    <span class="player-rating">👤 প্লেয়ার</span>
+                </div>
+            </div>
+            <div class="active-timer" style="background: rgba(16, 185, 129, 0.2); padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 16px; color: #10b981; border: 1px solid #10b981;">
+                <span id="gutiScoreRed">১৬ গুটি</span>
+            </div>
+        </div>
+
+        <!-- Game Actions (Same as Chess) -->
+        <div class="game-actions">
+            <div class="action-btn" onclick="gutiGame.undoMove()">
+                <i class="fas fa-undo"></i>
+                <span>আন্ডু</span>
+            </div>
+            <div class="action-btn" id="gutiTurnIndicator" style="color: #ef4444;">
+                <i class="fas fa-circle" style="font-size: 8px;"></i>
+                <span>লাল চালবে</span>
+            </div>
+            <div class="action-btn" onclick="gutiGame.resetGame()">
+                <i class="fas fa-redo"></i>
+                <span>রিসেট</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrom Board Game Screen -->
+    <div class="app-screen" id="carromScreen" style="display: none; flex-direction: column; background-color: #0b1120; overflow: hidden; height: 100%; width: 100%; position: relative; padding-bottom: 110px;">
+        <!-- Header / Top Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 15px; z-index: 10;">
+            <i class="fas fa-arrow-left back-button" style="color: #eab308; background: rgba(234, 179, 8, 0.1); padding: 8px; border-radius: 10px; cursor: pointer; border: 1px solid rgba(234, 179, 8, 0.3);" onclick="showScreen('hubScreen')"></i>
+            <i class="fas fa-cog" style="color: #eab308; background: rgba(234, 179, 8, 0.1); padding: 8px; border-radius: 10px; cursor: pointer; border: 1px solid rgba(234, 179, 8, 0.3);"></i>
+        </div>
+
+        <!-- Top Players Area -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 0 15px 5px 15px; z-index: 10;">
+            <!-- Player 1 -->
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #eab308; background: #0f172a; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #eab308;">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div>
+                    <div id="carromPlayer1Name" style="color: white; font-size: 10px; font-weight: bold; margin-bottom: 3px;">PLAYER 1 (সাদা)</div>
+                    <div id="carromScore1" style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 2px 10px; color: white; font-size: 14px; font-weight: bold; border: 1px solid rgba(255,255,255,0.2); text-align: center;">00</div>
+                </div>
+            </div>
+            
+            <!-- Turn Indicator -->
+            <div id="carromTurnIndicator" style="margin-top: 10px; background: rgba(0,0,0,0.5); border: 1px solid #eab308; color: #eab308; padding: 3px 10px; border-radius: 15px; font-size: 10px; font-weight: bold;">
+                <i class="fas fa-circle" style="font-size: 6px; margin-right: 4px;"></i> YOUR TURN
+            </div>
+
+            <!-- Player 2 -->
+            <div style="display: flex; align-items: center; gap: 8px; flex-direction: row-reverse;">
+                <div style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #eab308; background: #7f1d1d; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fca5a5;">
+                    <i id="carromPlayer2Icon" class="fas fa-user"></i>
+                </div>
+                <div style="text-align: right;">
+                    <div id="carromPlayer2Name" style="color: white; font-size: 10px; font-weight: bold; margin-bottom: 3px;">PLAYER 2 (কালো)</div>
+                    <div id="carromScore2" style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 2px 10px; color: white; font-size: 14px; font-weight: bold; border: 1px solid rgba(255,255,255,0.2); text-align: center;">00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carrom Board Canvas Container -->
+        <div id="carromBoardContainer" style="position: relative; width: 100%; max-width: 450px; margin: 0 auto; flex: 1; min-height: 0; display: flex; justify-content: center; align-items: center; padding: 0 40px;">
+            <canvas id="carromCanvas" width="800" height="800" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.6); background: #eab308; aspect-ratio: 1/1;"></canvas>
+            
+            <!-- Power Meter (Floating on the right side of the canvas) -->
+            <div style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 25px; height: 110px; background: rgba(0,0,0,0.7); border-radius: 15px; border: 1px solid rgba(234, 179, 8, 0.5); display: flex; flex-direction: column; justify-content: flex-end; padding: 3px; z-index: 15;">
+                <div id="carromPowerFill" style="width: 100%; height: 0%; background: linear-gradient(to top, #ef4444, #eab308, #22c55e); border-radius: 10px; transition: height 0.1s;"></div>
+                <div id="carromPowerKnob" style="position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 21px; height: 21px; border-radius: 50%; background: #fef08a; border: 2px solid #ca8a04; box-shadow: 0 2px 6px rgba(0,0,0,0.8); z-index: 2;"></div>
+            </div>
+
+            <!-- Game Over Overlay for Carrom -->
+            <div id="carromGameOverOverlay" style="display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.8); border-radius: 20px; flex-direction: column; justify-content: center; align-items: center; z-index: 20;">
+                <h2 id="carromWinnerText" style="color: #eab308; font-size: 24px; margin-bottom: 15px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">You Win!</h2>
+                <button onclick="carromGame.resetGame(); document.getElementById('carromGameOverOverlay').style.display='none';" style="padding: 8px 25px; background: linear-gradient(135deg, #eab308, #ca8a04); color: white; border: none; border-radius: 15px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(234, 179, 8, 0.4);">Play Again</button>
+            </div>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px 15px; display: flex; flex-direction: column; align-items: center; gap: 10px; background: linear-gradient(to top, rgba(15, 23, 42, 1) 10%, rgba(15, 23, 42, 0) 100%); z-index: 10;">
+            <!-- Aim Slider Removed -->
+            <!-- Bottom Action Buttons -->
+            <div style="display: flex; gap: 15px; justify-content: center; width: 100%; margin-bottom: 5px;">
+                <button class="carrom-btn" onclick="carromGame.resetGame()"><i class="fas fa-redo"></i></button>
+                <button class="carrom-btn"><i class="fas fa-list"></i></button>
+                <button class="carrom-btn"><i class="fas fa-volume-up"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 16 Guti Game Over Modal -->
+    <div id="gutiGameOverModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(8px); z-index:9999; justify-content:center; align-items:center;">
+        <div style="background: linear-gradient(145deg, #1e293b, #0f172a); border-radius: 20px; padding: 30px 25px; width: 85%; max-width: 340px; text-align:center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 60px rgba(0,0,0,0.8);">
+            <div id="gutiModalIcon" style="font-size: 60px; margin-bottom: 15px;">🏆</div>
+            <h2 id="gutiModalTitle" style="color: #f1f5f9; font-size: 22px; margin: 0 0 8px 0; font-weight: 700;">গেম শেষ!</h2>
+            <p id="gutiModalMsg" style="color: #94a3b8; font-size: 14px; margin: 0 0 25px 0; line-height: 1.5;"></p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="gutiGame.resetGame(); document.getElementById('gutiGameOverModal').style.display='none';" style="flex:1; padding: 12px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit;">
+                    <i class="fas fa-redo"></i> আবার খেলুন
+                </button>
+                <button onclick="document.getElementById('gutiGameOverModal').style.display='none'; showScreen('gutiModesScreen');" style="flex:1; padding: 12px; background: rgba(255,255,255,0.08); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit;">
+                    <i class="fas fa-home"></i> মেনু
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Home Screen -->
+    <div class="app-screen" id="homeScreen" style="display: none;">
+        <!-- Header / User Info -->
+        <div class="home-header">
+            <div class="user-snippet">
+                <img src="https://ui-avatars.com/api/?name=Rashed+Khan&background=random" alt="User" class="avatar-small">
+                <div class="user-info">
+                    <span class="user-name">রাশেদ খান <i class="fas fa-flag text-green"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Challenge Card -->
+        <div class="daily-challenge">
+            <div class="challenge-info">
+                <h3>দৈনিক চ্যালেঞ্জ</h3>
+                <p>3 মুভ চেকমেট করুন</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1586165368502-1bad197a6461?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Chess pieces" class="challenge-img">
+        </div>
+
+        <div class="home-menu-options">
+            <div class="menu-row" onclick="window.currentGameType = 'chess'; showScreen('onlineScreen')">
+                <i class="fas fa-globe menu-icon blue"></i>
+                <div class="menu-text">
+                    <h4>অনলাইন ম্যাচ</h4>
+                    <p>বিশ্বের সাথে খেলুন</p>
+                </div>
+                <i class="fas fa-chevron-right arrow"></i>
+            </div>
+            <div class="menu-row" onclick="window.currentGameType = 'chess'; sendGameInvite('bot_1', 'চেস বট (লেভেল ১)')">
+                <i class="fas fa-robot menu-icon green"></i>
+                <div class="menu-text">
+                    <h4>বটের সাথে খেলুন</h4>
+                    <p>AI এর সাথে প্র্যাকটিস</p>
+                </div>
+                <i class="fas fa-chevron-right arrow"></i>
+            </div>
+
+            <div class="menu-row" onclick="startLocalMatch()">
+                <i class="fas fa-chess-board menu-icon green-dark"></i>
+                <div class="menu-text">
+                    <h4>লোকাল ম্যাচ</h4>
+                    <p>এক ডিভাইসে ২ জন</p>
+                </div>
+                <i class="fas fa-chevron-right arrow"></i>
+            </div>
+
+            <div class="menu-row" onclick="window.location.href = 'auth/login.html?view=true'">
+                <i class="fas fa-home menu-icon blue"></i>
+                <div class="menu-text">
+                    <h4>ল্যান্ডিং পেজ</h4>
+                    <p>সাবস্ক্রিপশন ও প্ল্যাটফর্ম তথ্য দেখুন</p>
+                </div>
+                <i class="fas fa-chevron-right arrow"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Modes Selection Screen -->
+    <div class="app-screen modes-container" id="modesScreen" style="display: none;">
+        <div class="header">
+            <i class="fas fa-chevron-left back-button" onclick="showScreen('homeScreen')"></i>
+            <h2>গেম মোড নির্বাচন</h2>
+        </div>
+        
+        <div class="modes-list">
+            <!-- Online Match -->
+            <div class="mode-card online-match" onclick="window.currentGameType = 'chess'; showScreen('onlineScreen')">
+                <div class="mode-content">
+                    <i class="fas fa-globe mode-icon blue-icon"></i>
+                    <div class="mode-title">অনলাইন ম্যাচ</div>
+                </div>
+            </div>
+            
+            <!-- Play with Bot -->
+            <div class="mode-card play-bot" onclick="window.currentGameType = 'chess'; sendGameInvite('bot_1', 'চেস বট (লেভেল ১)')">
+                <div class="mode-content">
+                    <div class="mode-title-group">
+                        <div class="mode-title">বটের সাথে<br>খেলুন</div>
+                    </div>
+                    <i class="fas fa-robot bot-icon silver-icon"></i>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+
+    <!-- 16 Guti Game Modes Selection Screen (Same design as Chess homeScreen) -->
+    <div class="app-screen" id="gutiModesScreen" style="display: none;">
+        <!-- Header / User Info -->
+        <div class="home-header">
+            <div class="user-snippet">
+                <i class="fas fa-arrow-left" onclick="showScreen('hubScreen')" style="font-size: 18px; color: var(--gold-light); cursor: pointer; margin-right: 10px; padding: 5px;"></i>
+                <img src="https://ui-avatars.com/api/?name=Rashed+Khan&background=random" alt="User" class="avatar-small">
+                <div class="user-info">
+                    <span class="user-name">রাশেদ খান <i class="fas fa-flag text-green"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Challenge / Banner Card -->
+        <div class="daily-challenge">
+            <div class="challenge-info">
+                <h3>১৬ গুটি চ্যালেঞ্জ</h3>
+                <p>সব গুটি জয় করার সেরা কৌশল</p>
+            </div>
+            <img src="sholo_guti_bg.png" alt="16 Guti" class="challenge-img">
+        </div>
+
+        <!-- Menu Options (Exact same design as Chess) -->
+        <div class="home-menu-options">
+            <div class="menu-row" onclick="startGutiOnlineMatch()">
+                <i class="fas fa-globe menu-icon blue"></i>
+                <div class="menu-text">
+                    <h4>অনলাইন ম্যাচ</h4>
+                    <p>বিশ্বের সাথে খেলুন</p>
+                </div>
+                <i class="fas fa-chevron-right arrow"></i>
+            </div>
+
+            <div class="menu-row" onclick="startGutiBotMatch()">
+                <i class="fas fa-robot menu-icon green"></i>
+                <div class="menu-text">
+                    <h4>বটের সাথে খেলুন</h4>
+                    <p>AI এর সাথে প্র্যাকটিস</p>
+                </div>
+                <i class="fas fa-chevron-right arrow"></i>
+            </div>
+
+            <div class="menu-row" onclick="startGutiLocalMatch()">
+                <i class="fas fa-th menu-icon purple"></i>
+                <div class="menu-text">
+                    <h4>লোকাল ম্যাচ</h4>
+                    <p>এক ডিভাইসে ২ জন</p>
+                </div>
+                <i class="fas fa-chevron-right arrow"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrom Game Modes Selection Screen (Same design as Chess homeScreen) -->
+    <div class="app-screen" id="carromModesScreen" style="display: none;">
+        <!-- Header / User Info -->
+        <div class="home-header">
+            <div class="user-snippet">
+                <i class="fas fa-arrow-left" onclick="showScreen('hubScreen')" style="font-size: 18px; color: var(--gold-light); cursor: pointer; margin-right: 10px; padding: 5px;"></i>
+                <img src="https://ui-avatars.com/api/?name=Rashed+Khan&background=random" alt="User" class="avatar-small">
+                <div class="user-info">
+                    <span class="user-name">রাশেদ খান <i class="fas fa-flag text-green"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Challenge / Banner Card -->
+        <div class="daily-challenge">
+            <div class="challenge-info">
+                <h3>ক্যারম চ্যালেঞ্জ</h3>
+                <p>সব গুটি পকেটে ফেলার সেরা কৌশল</p>
+            </div>
+            <img src="carrom_bg.png" alt="Carrom" class="challenge-img" style="opacity: 0.7;">
+        </div>
+
+        <!-- Menu Options (Exact same design as Chess) -->
+        <div class="home-menu-options">
+            <div class="menu-row" onclick="showAlert('অনলাইন ক্যারম', 'অনলাইন মাল্টিপ্লেয়ার ক্যারম খুব শীঘ্রই আসছে!');">
+                <i class="fas fa-globe menu-icon blue"></i>
+                <div class="menu-text">
+                    <h4>অনলাইন ম্যাচ</h4>
+                    <p>বিশ্বের সাথে খেলুন</p>
+                </div>
+                <i class="fas fa-chevron-right arrow"></i>
+            </div>
+
+            <div class="menu-row" onclick="showScreen('carromScreen'); initCarrom('bot');">
+                <i class="fas fa-robot menu-icon green"></i>
+                <div class="menu-text">
+                    <h4>বটের সাথে খেলুন</h4>
+                    <p>AI এর সাথে প্র্যাকটিস</p>
+                </div>
+                <i class="fas fa-chevron-right arrow"></i>
+            </div>
+
+            <div class="menu-row" onclick="showScreen('carromScreen'); initCarrom('local');">
+                <i class="fas fa-th menu-icon purple"></i>
+                <div class="menu-text">
+                    <h4>লোকাল ম্যাচ</h4>
+                    <p>এক ডিভাইসে ২ জন</p>
+                </div>
+                <i class="fas fa-chevron-right arrow"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Online Match Screen (Lobby) -->
+    <div class="app-screen" id="onlineScreen" style="display: none;">
+        <div class="header">
+            <i class="fas fa-chevron-left back-button" onclick="showScreen('hubScreen')"></i>
+            <h2>অনলাইন প্লেয়ার্স</h2>
+        </div>
+        <div style="padding: 15px;" id="onlinePlayersList">
+            <p style="text-align: center; color: var(--text-gray); margin-top: 20px;">অনলাইন প্লেয়ার খোঁজা হচ্ছে...</p>
+        </div>
+    </div>
+
+    <!-- Tournament Screen Placeholder -->
+    <div class="app-screen" id="tournamentScreen" style="display: none;">
+        <div class="header">
+            <h2>টুর্নামেন্ট</h2>
+        </div>
+        <div style="text-align: center; margin-top: 50px;">
+            <i class="fas fa-chess-knight" style="font-size: 60px; color: var(--gold-light); margin-bottom: 20px;"></i>
+            <h3>টুর্নামেন্ট মডিউল</h3>
+            <p>খুব শীঘ্রই আসছে...</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div class="app-screen" id="leaderboardScreen" style="display: none; padding: 15px 15px 95px 15px; overflow-y: auto;">
+        <div class="header">
+            <h2>ড্যাশবোর্ড</h2>
+        </div>
+
+        <!-- Stats Overview 2x2 Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px;">
+            <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; text-align: center;">
+                <i class="fas fa-gamepad" style="color: #3b82f6; font-size: 24px; margin-bottom: 6px;"></i>
+                <div id="dashTotalMatches" style="font-size: 22px; font-weight: 800; color: #fff;">০</div>
+                <div style="font-size: 12px; color: #9ca3af;">মোট ম্যাচ</div>
+            </div>
+            <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; text-align: center;">
+                <i class="fas fa-trophy" style="color: #eab308; font-size: 24px; margin-bottom: 6px;"></i>
+                <div id="dashWins" style="font-size: 22px; font-weight: 800; color: #fff;">০</div>
+                <div style="font-size: 12px; color: #9ca3af;">বিজয়</div>
+            </div>
+            <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; text-align: center;">
+                <i class="fas fa-chart-line" style="color: #10b981; font-size: 24px; margin-bottom: 6px;"></i>
+                <div id="dashWinRate" style="font-size: 22px; font-weight: 800; color: #fff;">০%</div>
+                <div style="font-size: 12px; color: #9ca3af;">উইন রেট</div>
+            </div>
+            <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; text-align: center;">
+                <i class="fas fa-medal" style="color: #a855f7; font-size: 24px; margin-bottom: 6px;"></i>
+                <div id="dashGlobalRank" style="font-size: 22px; font-weight: 800; color: #fff;">#৩</div>
+                <div style="font-size: 12px; color: #9ca3af;">গ্লোবাল র‍্যাংক</div>
+            </div>
+        </div>
+
+        <!-- Game Progress Card -->
+        <div style="margin-top: 20px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 18px;">
+            <h3 style="color: var(--gold-light); font-size: 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-chart-pie"></i> গেম প্রগ্রেস
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: #e2e8f0; margin-bottom: 4px;">
+                        <span>দাবা (Chess)</span>
+                        <span id="dashChessText" style="color: #3b82f6;">লেভেল ১ (০%)</span>
+                    </div>
+                    <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                        <div id="dashChessBar" style="width: 0%; height: 100%; background: #3b82f6; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: #e2e8f0; margin-bottom: 4px;">
+                        <span>১৬ গুটি (16 Guti)</span>
+                        <span id="dashGutiText" style="color: #10b981;">০টি ম্যাচ জয় (০%)</span>
+                    </div>
+                    <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                        <div id="dashGutiBar" style="width: 0%; height: 100%; background: #10b981; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: #e2e8f0; margin-bottom: 4px;">
+                        <span>ক্যারম (Carrom)</span>
+                        <span id="dashCarromText" style="color: #eab308;">০টি ম্যাচ জয় (০%)</span>
+                    </div>
+                    <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                        <div id="dashCarromBar" style="width: 0%; height: 100%; background: #eab308; border-radius: 4px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Players List -->
+        <div style="margin-top: 20px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 18px;">
+            <h3 style="color: #eab308; font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-crown"></i> শীর্ষ খেলোয়াড়
+            </h3>
+            <div id="dashLeaderboardList" style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="color: gold; font-weight: bold;">#১</span>
+                        <span style="color: #fff; font-weight: 600;">সাকিব আল হাসান</span>
+                    </div>
+                    <span style="color: #10b981; font-weight: bold;">২৪৫০ pts</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="color: #cbd5e1; font-weight: bold;">#২</span>
+                        <span style="color: #fff; font-weight: 600;">তামিম ইকবাল</span>
+                    </div>
+                    <span style="color: #10b981; font-weight: bold;">২৩১০ pts</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(234, 179, 8, 0.15); border: 1px solid rgba(234, 179, 8, 0.4); border-radius: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="color: var(--gold-light); font-weight: bold;">#১২</span>
+                        <span style="color: #fff; font-weight: 600;">আপনি (নিজের অবস্থান)</span>
+                    </div>
+                    <span style="color: var(--gold-light); font-weight: bold;">১৮৪২ pts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Screen -->
+    <div class="app-screen" id="profileScreen" style="display: none; padding: 15px 15px 95px 15px; overflow-y: auto;">
+        <div class="header">
+            <h2>প্রোফাইল</h2>
+        </div>
+        <div style="text-align: center; margin-top: 15px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 24px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <img src="https://ui-avatars.com/api/?name=Rashed+Khan&background=random" alt="User" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 12px; border: 3px solid var(--gold-light);">
+            <h3 id="profileUserName" style="color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 4px;">খেলোয়াড়</h3>
+            <p id="profileUserPhone" style="color: #9ca3af; font-size: 14px; margin-bottom: 14px;">ID: CHS12456</p>
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 20px;">
+                <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block;"></span>
+                আপনার সাবস্ক্রিপশন চালু আছে
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+                <button onclick="handleUnsubscribe()" style="display: flex; align-items: center; justify-content: center; width: 100%; padding: 13px; border-radius: 12px; border: none; background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; font-weight: bold; font-size: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);">
+                    <i class="fas fa-user-times" style="margin-right: 8px;"></i> আনসাবস্ক্রাইব করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Play Screen -->
+    <div class="app-screen" id="gameScreen" style="display: none; padding: 15px;">
+        <!-- Header -->
+        <div class="header" style="margin-top: 0; margin-bottom: 15px;">
+            <i class="fas fa-chevron-left back-button" onclick="showScreen('homeScreen')"></i>
+            <h2 style="font-size: 18px;" id="gameScreenTitle">বট ম্যাচ</h2>
+        </div>
+
+        <!-- Top Player (Opponent/Bot) -->
+        <div class="player-bar top-player">
+            <div class="player-info-game">
+                <img src="https://ui-avatars.com/api/?name=Chess+Bot&background=random" alt="Bot" class="avatar-small">
+                <div style="display:flex; flex-direction: column;">
+                    <span class="player-name-game">চেস বট <i class="fas fa-robot" style="color:#9ca3af; font-size:12px;"></i></span>
+                    <span class="player-rating">🤖 লেভেল ৩</span>
+                </div>
+            </div>
+            <div class="timer" id="botTimerBox">
+                <i class="far fa-clock"></i> <span id="botTimerText">10:00</span>
+            </div>
+        </div>
+
+        <!-- Chess Board -->
+        <div class="chess-board-wrapper">
+            <div id="chessBoard" class="chess-board"></div>
+        </div>
+
+        <!-- Bottom Player (Me) -->
+        <div class="player-bar bottom-player">
+            <div class="player-info-game">
+                <img src="https://ui-avatars.com/api/?name=Rashed+Khan&background=random" alt="Me" class="avatar-small">
+                <div style="display:flex; flex-direction: column;">
+                    <span class="player-name-game">রাশেদ খান <i class="fas fa-flag text-green"></i></span>
+                    <span class="player-rating"><i class="fas fa-trophy" style="color:var(--gold-light); font-size:10px;"></i> 1842</span>
+                </div>
+            </div>
+            <div class="timer active-timer" id="playerTimerBox">
+                <i class="far fa-clock"></i> <span id="playerTimerText">10:00</span>
+            </div>
+        </div>
+
+        <!-- Game Actions -->
+        <div class="game-actions">
+            <div class="action-btn" onclick="undoMove()">
+                <i class="fas fa-undo"></i>
+                <span>আন্ডু</span>
+            </div>
+            <div class="action-btn" onclick="showHint()">
+                <i class="fas fa-lightbulb"></i>
+                <span>হিন্ট</span>
+            </div>
+            <div class="action-btn" style="color: #ef4444;" onclick="resignGame()">
+                <i class="fas fa-flag"></i>
+                <span>রিজাইন</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav" id="bottomNav" style="display: none;">
+        <div class="nav-item active" onclick="switchTab('hubScreen', this)">
+            <i class="fas fa-home"></i>
+            <span>হোম</span>
+        </div>
+
+        <div class="nav-item" onclick="switchTab('leaderboardScreen', this)">
+            <i class="fas fa-chart-pie"></i>
+            <span>ড্যাশবোর্ড</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('profileScreen', this)">
+            <i class="fas fa-user"></i>
+            <span>প্রোফাইল</span>
+        </div>
+    </div>
+
+    <!-- Incoming Invite Modal -->
+    <div id="inviteModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-icon"><i class="fas fa-envelope-open-text"></i></div>
+            <h2>গেম ইনভাইট!</h2>
+            <p id="inviteMessage">Player wants to play chess with you.</p>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn-invite modal-btn" style="background: #ef4444; color: white;" onclick="handleInviteResponse('rejected')">
+                    <span>বাতিল</span>
+                </button>
+                <button class="btn-invite modal-btn" style="background: #22c55e; color: white;" onclick="handleInviteResponse('accepted')">
+                    <span>খেলবো</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Game Over Modal -->
+    <div id="gameOverModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-icon"><i class="fas fa-chess-king"></i></div>
+            <h2 id="gameOverTitle">চেকমেট!</h2>
+            <p id="gameOverMessage">খেলা শেষ।</p>
+            <button class="nav-play-btn modal-btn" onclick="closeGameOverModal()">
+                <span>নতুন গেম</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Generic Alert Modal -->
+    <div id="alertModal" class="modal-overlay" style="display: none; z-index: 2000;">
+        <div class="modal-content">
+            <div class="modal-icon"><i class="fas fa-info-circle"></i></div>
+            <h2 id="alertTitle">নোটিফিকেশন</h2>
+            <p id="alertMessage">বার্তা</p>
+            <button class="btn-invite modal-btn" style="background: var(--gold-gradient); color: #000; margin-top: 15px;" onclick="closeAlertModal()">
+                <span>ঠিক আছে</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all app screens
+            document.querySelectorAll('.app-screen, .splash-container').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Show the target screen
+            document.getElementById(screenId).style.display = 'flex';
+
+            // Show bottom nav unless we are on splash, modes, game screen, guti screen, or carrom screen
+            if (screenId !== 'splashScreen' && screenId !== 'modesScreen' && screenId !== 'gameScreen' && screenId !== 'gutiScreen' && screenId !== 'carromScreen' && screenId !== 'gutiModesScreen' && screenId !== 'carromModesScreen') {
+                document.getElementById('bottomNav').style.display = 'flex';
+            } else {
+                document.getElementById('bottomNav').style.display = 'none';
+            }
+
+            if (screenId === 'gutiScreen' && typeof gutiGame !== 'undefined') {
+                gutiGame.init();
+            }
+            if (typeof window.applyUserProfile === 'function') window.applyUserProfile();
+        }
+
+        function switchTab(screenId, navElement) {
+            // Update active state
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(navElement) navElement.classList.add('active');
+            
+            showScreen(screenId);
+        }
+
+        let game = null;
+        let selectedSquare = null;
+        let validMoves = [];
+        let playerTime = 600; // 10 minutes
+        let botTime = 600;
+        let timerInterval = null;
+        let gameMode = 'bot'; // 'bot' or 'online'
+        let myColor = 'w'; // 'w' or 'b'
+        let currentHost = null;
+        let opponentName = 'চেস বট';
+
+        function updateTimersUI() {
+            const pMin = String(Math.floor(playerTime / 60)).padStart(2, '0');
+            const pSec = String(playerTime % 60).padStart(2, '0');
+            document.getElementById('playerTimerText').innerText = `${pMin}:${pSec}`;
+            
+            const bMin = String(Math.floor(botTime / 60)).padStart(2, '0');
+            const bSec = String(botTime % 60).padStart(2, '0');
+            document.getElementById('botTimerText').innerText = `${bMin}:${bSec}`;
+            
+            if (game && game.turn() === 'w') {
+                document.getElementById('playerTimerBox').classList.add('active-timer');
+                document.getElementById('botTimerBox').classList.remove('active-timer');
+            } else if (game) {
+                document.getElementById('botTimerBox').classList.add('active-timer');
+                document.getElementById('playerTimerBox').classList.remove('active-timer');
+            }
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (!game || game.game_over()) {
+                    clearInterval(timerInterval);
+                    return;
+                }
+                if (game.turn() === 'w') {
+                    playerTime--;
+                    if (playerTime <= 0) handleTimeout('w');
+                } else {
+                    botTime--;
+                    if (botTime <= 0) handleTimeout('b');
+                }
+                updateTimersUI();
+            }, 1000);
+        }
+
+        function handleTimeout(color) {
+            clearInterval(timerInterval);
+            let title = 'টাইম আউট!';
+            let message = color === 'w' ? 'আপনার সময় শেষ, আপনি হেরেছেন।' : 'বটের সময় শেষ, আপনি জিতেছেন!';
+            showGameOver(title, message);
+        }
+
+        function getPieceIconClass(piece) {
+            if (!piece) return '';
+            const typeMap = {
+                'p': 'pawn',
+                'r': 'rook',
+                'n': 'knight',
+                'b': 'bishop',
+                'q': 'queen',
+                'k': 'king'
+            };
+            const colorClass = piece.color === 'w' ? 'white-piece' : 'black-piece';
+            return `fas fa-chess-${typeMap[piece.type]} piece ${colorClass}`;
+        }
+
+        function renderBoard() {
+            const boardDiv = document.getElementById('chessBoard');
+            if (!boardDiv || !game) return;
+            boardDiv.innerHTML = '';
+            
+            const boardState = game.board(); 
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const isDark = (row + col) % 2 === 1;
+                    const square = document.createElement('div');
+                    square.className = `square ${isDark ? 'dark' : 'light'}`;
+                    
+                    const file = String.fromCharCode('a'.charCodeAt(0) + col);
+                    const rank = 8 - row;
+                    const squareId = file + rank;
+                    square.dataset.square = squareId;
+                    
+                    if (selectedSquare === squareId) {
+                        square.classList.add('selected');
+                    }
+                    if (validMoves.includes(squareId)) {
+                        square.classList.add('highlight');
+                    }
+                    
+                    const piece = boardState[row][col];
+                    if (piece) {
+                        // Highlight king if in check
+                        if (piece.type === 'k' && piece.color === game.turn() && game.in_check()) {
+                            square.classList.add('in-check');
+                        }
+                        const icon = document.createElement('i');
+                        icon.className = getPieceIconClass(piece);
+                        square.appendChild(icon);
+                    }
+                    
+                    square.addEventListener('click', () => handleSquareClick(squareId));
+                    boardDiv.appendChild(square);
+                }
+            }
+            updateTimersUI();
+        }
+
+        function handleSquareClick(squareId) {
+            if (!game || game.game_over() || (gameMode === 'online' && game.turn() !== myColor)) return; 
+
+            // Clear hints on click
+            document.querySelectorAll('.hint').forEach(el => el.classList.remove('hint'));
+
+            if (selectedSquare) {
+                let move = game.move({
+                    from: selectedSquare,
+                    to: squareId,
+                    promotion: 'q' // Always promote to queen for simplicity
+                });
+
+                if (move === null) {
+                    const piece = game.get(squareId);
+                    if (piece && piece.color === game.turn()) {
+                        selectedSquare = squareId;
+                        validMoves = game.moves({ square: squareId, verbose: true }).map(m => m.to);
+                    } else {
+                        selectedSquare = null;
+                        validMoves = [];
+                    }
+                } else {
+                    selectedSquare = null;
+                    validMoves = [];
+                    renderBoard();
+                    
+                    if (gameMode === 'online') {
+                        // Send move to firebase
+                        if (typeof FirebaseManager !== 'undefined') {
+                            FirebaseManager.sendGameData(currentHost, 'move', { move: move.san });
+                        }
+                    } else if (gameMode === 'bot') {
+                        // Make bot move after a tiny delay to feel natural
+                        setTimeout(makeBotMove, 500);
+                    }
+                    
+                    if (game.game_over()) {
+                        setTimeout(() => {
+                            let title = game.in_checkmate() ? 'চেকমেট!' : 'ড্র!';
+                            let message = game.in_checkmate() ? 'খেলা শেষ।' : 'খেলাটি ড্র হয়েছে।';
+                            showGameOver(title, message);
+                        }, 100);
+                        return;
+                    }
+                }
+            } else {
+                const piece = game.get(squareId);
+                // Allow selecting a piece if it's my turn
+                if (piece && piece.color === game.turn() && (gameMode === 'local' || game.turn() === myColor)) {
+                    selectedSquare = squareId;
+                    validMoves = game.moves({ square: squareId, verbose: true }).map(m => m.to);
+                }
+            }
+            renderBoard();
+        }
+
+        /* --- CHESS AI LOGIC --- */
+        const pieceValues = { 'p': 100, 'n': 320, 'b': 330, 'r': 500, 'q': 900, 'k': 20000 };
+
+        const pawnEvalWhite = [
+            [0,  0,  0,  0,  0,  0,  0,  0],
+            [50, 50, 50, 50, 50, 50, 50, 50],
+            [10, 10, 20, 30, 30, 20, 10, 10],
+            [5,  5, 10, 25, 25, 10,  5,  5],
+            [0,  0,  0, 20, 20,  0,  0,  0],
+            [5, -5,-10,  0,  0,-10, -5,  5],
+            [5, 10, 10,-20,-20, 10, 10,  5],
+            [0,  0,  0,  0,  0,  0,  0,  0]
+        ];
+        const pawnEvalBlack = pawnEvalWhite.slice().reverse();
+
+        const knightEval = [
+            [-50,-40,-30,-30,-30,-30,-40,-50],
+            [-40,-20,  0,  0,  0,  0,-20,-40],
+            [-30,  0, 10, 15, 15, 10,  0,-30],
+            [-30,  5, 15, 20, 20, 15,  5,-30],
+            [-30,  0, 15, 20, 20, 15,  0,-30],
+            [-30,  5, 10, 15, 15, 10,  5,-30],
+            [-40,-20,  0,  5,  5,  0,-20,-40],
+            [-50,-40,-30,-30,-30,-30,-40,-50]
+        ];
+
+        const bishopEvalWhite = [
+            [ -20,-10,-10,-10,-10,-10,-10,-20],
+            [ -10,  0,  0,  0,  0,  0,  0,-10],
+            [ -10,  0,  5, 10, 10,  5,  0,-10],
+            [ -10,  5,  5, 10, 10,  5,  5,-10],
+            [ -10,  0, 10, 10, 10, 10,  0,-10],
+            [ -10, 10, 10, 10, 10, 10, 10,-10],
+            [ -10,  5,  0,  0,  0,  0,  5,-10],
+            [ -20,-10,-10,-10,-10,-10,-10,-20]
+        ];
+        const bishopEvalBlack = bishopEvalWhite.slice().reverse();
+
+        const rookEvalWhite = [
+            [  0,  0,  0,  0,  0,  0,  0,  0],
+            [  5, 10, 10, 10, 10, 10, 10,  5],
+            [ -5,  0,  0,  0,  0,  0,  0, -5],
+            [ -5,  0,  0,  0,  0,  0,  0, -5],
+            [ -5,  0,  0,  0,  0,  0,  0, -5],
+            [ -5,  0,  0,  0,  0,  0,  0, -5],
+            [ -5,  0,  0,  0,  0,  0,  0, -5],
+            [  0,  0,  0,  5,  5,  0,  0,  0]
+        ];
+        const rookEvalBlack = rookEvalWhite.slice().reverse();
+
+        const evalQueen = [
+            [ -20,-10,-10, -5, -5,-10,-10,-20],
+            [ -10,  0,  0,  0,  0,  0,  0,-10],
+            [ -10,  0,  5,  5,  5,  5,  0,-10],
+            [  -5,  0,  5,  5,  5,  5,  0, -5],
+            [   0,  0,  5,  5,  5,  5,  0, -5],
+            [ -10,  5,  5,  5,  5,  5,  0,-10],
+            [ -10,  0,  5,  0,  0,  0,  0,-10],
+            [ -20,-10,-10, -5, -5,-10,-10,-20]
+        ];
+
+        const kingEvalWhite = [
+            [ -30,-40,-40,-50,-50,-40,-40,-30],
+            [ -30,-40,-40,-50,-50,-40,-40,-30],
+            [ -30,-40,-40,-50,-50,-40,-40,-30],
+            [ -30,-40,-40,-50,-50,-40,-40,-30],
+            [ -20,-30,-30,-40,-40,-30,-30,-20],
+            [ -10,-20,-20,-20,-20,-20,-20,-10],
+            [  20, 20,  0,  0,  0,  0, 20, 20],
+            [  20, 30, 10,  0,  0, 10, 30, 20]
+        ];
+        const kingEvalBlack = kingEvalWhite.slice().reverse();
+
+        function evaluateBoard(gameObj) {
+            let totalEvaluation = 0;
+            const board = gameObj.board();
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    const piece = board[i][j];
+                    if (piece) {
+                        let val = 0;
+                        switch (piece.type) {
+                            case 'p': val = pieceValues['p'] + (piece.color === 'w' ? pawnEvalWhite[i][j] : pawnEvalBlack[i][j]); break;
+                            case 'r': val = pieceValues['r'] + (piece.color === 'w' ? rookEvalWhite[i][j] : rookEvalBlack[i][j]); break;
+                            case 'n': val = pieceValues['n'] + knightEval[i][j]; break;
+                            case 'b': val = pieceValues['b'] + (piece.color === 'w' ? bishopEvalWhite[i][j] : bishopEvalBlack[i][j]); break;
+                            case 'q': val = pieceValues['q'] + evalQueen[i][j]; break;
+                            case 'k': val = pieceValues['k'] + (piece.color === 'w' ? kingEvalWhite[i][j] : kingEvalBlack[i][j]); break;
+                        }
+                        totalEvaluation += (piece.color === 'w' ? val : -val);
+                    }
+                }
+            }
+            return totalEvaluation;
+        }
+
+        function minimax(gameObj, depth, alpha, beta, isMaximizingPlayer) {
+            if (depth === 0 || gameObj.game_over()) return evaluateBoard(gameObj);
+
+            const moves = gameObj.moves();
+            if (isMaximizingPlayer) {
+                let bestVal = -Infinity;
+                for (let i = 0; i < moves.length; i++) {
+                    gameObj.move(moves[i]);
+                    bestVal = Math.max(bestVal, minimax(gameObj, depth - 1, alpha, beta, !isMaximizingPlayer));
+                    gameObj.undo();
+                    alpha = Math.max(alpha, bestVal);
+                    if (beta <= alpha) break;
+                }
+                return bestVal;
+            } else {
+                let bestVal = Infinity;
+                for (let i = 0; i < moves.length; i++) {
+                    gameObj.move(moves[i]);
+                    bestVal = Math.min(bestVal, minimax(gameObj, depth - 1, alpha, beta, !isMaximizingPlayer));
+                    gameObj.undo();
+                    beta = Math.min(beta, bestVal);
+                    if (beta <= alpha) break;
+                }
+                return bestVal;
+            }
+        }
+
+        function getBestMove(gameObj, depth = 2) {
+            const moves = gameObj.moves({ verbose: true });
+            if (moves.length === 0) return null;
+            
+            let bestMoves = [];
+            let bestValue = gameObj.turn() === 'w' ? -Infinity : Infinity;
+
+            for (let i = 0; i < moves.length; i++) {
+                const move = moves[i];
+                gameObj.move(move);
+                const boardValue = minimax(gameObj, depth - 1, -Infinity, Infinity, gameObj.turn() === 'w');
+                gameObj.undo();
+                
+                if (gameObj.turn() === 'w') {
+                    if (boardValue > bestValue) { 
+                        bestValue = boardValue; 
+                        bestMoves = [move]; 
+                    } else if (boardValue === bestValue) {
+                        bestMoves.push(move);
+                    }
+                } else {
+                    if (boardValue < bestValue) { 
+                        bestValue = boardValue; 
+                        bestMoves = [move]; 
+                    } else if (boardValue === bestValue) {
+                        bestMoves.push(move);
+                    }
+                }
+            }
+            
+            // Pick a random move from all the equally "best" moves
+            return bestMoves[Math.floor(Math.random() * bestMoves.length)] || moves[Math.floor(Math.random() * moves.length)];
+        }
+        /* --- END CHESS AI LOGIC --- */
+
+        function makeBotMove() {
+            if (!game || game.game_over() || gameMode !== 'bot') return;
+            
+            // Clear any hints when a move is made
+            document.querySelectorAll('.hint').forEach(el => el.classList.remove('hint'));
+
+            const bestMove = getBestMove(game, 2); // Depth 2 provides a good balance of difficulty and speed
+            if (bestMove) {
+                game.move(bestMove);
+                renderBoard();
+            }
+            
+            if (game.game_over()) {
+                setTimeout(() => {
+                    let title = game.in_checkmate() ? 'চেকমেট!' : 'ড্র!';
+                    let message = game.in_checkmate() ? 'আপনি হেরেছেন।' : 'খেলাটি ড্র হয়েছে।';
+                    showGameOver(title, message);
+                }, 100);
+            }
+        }
+
+        function undoMove() {
+            if (!game || game.game_over()) return;
+            if (gameMode === 'bot') {
+                // Undo twice (Bot's move + Player's move) to get back to player's turn
+                game.undo();
+                game.undo();
+            } else if (gameMode === 'local') {
+                game.undo();
+            } else {
+                return; // Disabled for online
+            }
+            selectedSquare = null;
+            validMoves = [];
+            document.querySelectorAll('.hint').forEach(el => el.classList.remove('hint'));
+            renderBoard();
+        }
+
+        function resignGame() {
+            if (!game || game.game_over()) return;
+            clearInterval(timerInterval);
+            showGameOver('রিজাইন!', 'আপনি হার মেনেছেন।');
+        }
+
+        function showHint() {
+            if (!game || game.game_over() || game.turn() !== myColor) return;
+            
+            // Get best move for white using AI
+            const hintMove = getBestMove(game, 2);
+            if (hintMove) {
+                document.querySelectorAll('.hint').forEach(el => el.classList.remove('hint'));
+                
+                const fromSquare = document.querySelector(`.square[data-square="${hintMove.from}"]`);
+                const toSquare = document.querySelector(`.square[data-square="${hintMove.to}"]`);
+                
+                if (fromSquare) fromSquare.classList.add('hint');
+                if (toSquare) toSquare.classList.add('hint');
+            }
+        }
+
+        function showGameOver(title, message) {
+            document.getElementById('gameOverTitle').innerText = title;
+            document.getElementById('gameOverMessage').innerText = message;
+            document.getElementById('gameOverModal').style.display = 'flex';
+            if (typeof window.recordGameResult === 'function') {
+                window.recordGameResult('chess', title.includes('চেকমেট') || title.includes('জিতেছেন') || message.includes('জিতেছেন'));
+            }
+        }
+
+        function closeGameOverModal() {
+            document.getElementById('gameOverModal').style.display = 'none';
+            initGame(); // Reset the game board
+        }
+
+        function showAlert(title, message) {
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertMessage').innerText = message;
+            document.getElementById('alertModal').style.display = 'flex';
+        }
+
+        function closeAlertModal() {
+            document.getElementById('alertModal').style.display = 'none';
+        }
+
+        function initGame() {
+            if (typeof Chess !== 'undefined') {
+                game = new Chess();
+                playerTime = 600;
+                botTime = 600;
+                updateTimersUI();
+                startTimer();
+                renderBoard();
+                if (typeof window.applyUserProfile === 'function') window.applyUserProfile();
+            } else {
+                console.error("chess.js is not loaded.");
+            }
+        }
+
+        // Simulate loading progress
+        document.addEventListener("DOMContentLoaded", () => {
+            // Give scripts a moment to load
+            setTimeout(initGame, 100);
+            
+            // Show Game Hub Screen first
+            showScreen('hubScreen');
+        });
+
+        function startChessGame() {
+            showScreen('splashScreen');
+            const progressBar = document.querySelector('.progress-bar-fill');
+            let progress = 0;
+
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+
+                if (progressBar) progressBar.style.width = `${progress}%`;
+
+                if (progress === 100) {
+                    clearInterval(interval);
+                    // Transition to Home Screen
+                    setTimeout(() => {
+                        showScreen('homeScreen');
+                    }, 500);
+                }
+            }, 300);
+        }
+    </script>
+
+    <!-- Firebase SDK (v8) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        // Online Multiplayer Logic
+        let pendingHost = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof FirebaseManager !== 'undefined') {
+                FirebaseManager.initOnlineStatus();
+                
+                // Fetch online users
+                FirebaseManager.listenForOnlineUsers((users) => {
+                    const listHtml = document.getElementById('onlinePlayersList');
+                    if (users.length === 0) {
+                        listHtml.innerHTML = '<p style="text-align: center; color: var(--text-gray); margin-top: 20px;">কেউ অনলাইনে নেই।</p>';
+                        return;
+                    }
+                    
+                    let html = '';
+                    users.forEach(user => {
+                        html += `
+                        <div class="player-bar" style="margin-bottom: 10px; background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.05);">
+                            <div class="player-info-game">
+                                <div style="font-size: 30px; margin-right: 10px;">${user.avatar || '👤'}</div>
+                                <div style="display:flex; flex-direction: column;">
+                                    <span class="player-name-game">${user.name}</span>
+                                    <span class="player-rating" style="color: #4ade80;">• অনলাইনে আছে</span>
+                                </div>
+                            </div>
+                            <button class="btn-invite" onclick="sendGameInvite('${user.phone}', '${user.name}')">খেলতে ডাকুন</button>
+                        </div>
+                        `;
+                    });
+                    listHtml.innerHTML = html;
+                });
+
+                // Listen for incoming invites
+                FirebaseManager.listenForInvites((inviteData) => {
+                    pendingHost = inviteData.hostPhone;
+                    opponentName = inviteData.hostName;
+                    
+                    window.currentGameType = inviteData.gameType || 'chess';
+                    let gameNameText = window.currentGameType === 'guti' ? '১৬ গুটি' : 'দাবা';
+                    
+                    document.getElementById('inviteMessage').innerText = `${inviteData.hostName} আপনার সাথে ${gameNameText} খেলতে চায়!`;
+                    document.getElementById('inviteModal').style.display = 'flex';
+                });
+
+                // Listen for responses to my invites
+                FirebaseManager.listenForInviteResponses((response) => {
+                    if (response.status === 'accepted') {
+                        currentHost = FirebaseManager.myUserId;
+                        opponentName = response.responderName;
+                        myColor = 'w';
+                        gameMode = 'online';
+                        
+                        // Set up game room
+                        FirebaseManager.startGame([
+                            { phone: currentHost, name: FirebaseManager.myUserId }, // simplified
+                            { phone: response.responderPhone, name: response.responderName }
+                        ]);
+                        
+                        startOnlineMatch(opponentName, false);
+                    } else if (response.status === 'rejected') {
+                        showAlert('ইনভাইট বাতিল', `${response.responderName} ইনভাইট বাতিল করেছে।`);
+                    }
+                });
+
+                // Listen for Game Start (when I accepted an invite)
+                FirebaseManager.listenForGameStart((gameData) => {
+                    if (!currentHost) { // If I am not the host, I just got pulled in
+                        currentHost = pendingHost;
+                        myColor = 'b'; // Host is white, Guest is black
+                        gameMode = 'online';
+                        startOnlineMatch(opponentName, true);
+                    }
+                });
+
+                // Listen for Game Data (Opponent moves)
+                FirebaseManager.listenForGameData((action, data) => {
+                    if (action === 'move' && data.move) {
+                        game.move(data.move);
+                        renderBoard();
+                        
+                        if (game.game_over()) {
+                            setTimeout(() => {
+                                let title = game.in_checkmate() ? 'চেকমেট!' : 'ড্র!';
+                                let message = game.in_checkmate() ? 'আপনি হেরেছেন।' : 'খেলাটি ড্র হয়েছে।';
+                                showGameOver(title, message);
+                            }, 100);
+                        }
+                    }
+                });
+            }
+        });
+        
+        function startLocalMatch() {
+            gameMode = 'local';
+            myColor = 'w'; 
+            opponentName = 'প্লেয়ার ২ (কালো)';
+            
+            showScreen('gameScreen');
+            document.getElementById('gameScreenTitle').innerText = 'লোকাল ম্যাচ';
+            document.querySelector('.top-player .player-name-game').innerHTML = `প্লেয়ার ২ (কালো) <i class="fas fa-user" style="color:#9ca3af; font-size:12px;"></i>`;
+            document.querySelector('.top-player .player-rating').innerText = '👤 লোকাল প্লেয়ার';
+            
+            const myName = window.CURRENT_USER_NAME || 'প্লেয়ার ১';
+            document.querySelector('.bottom-player .player-name-game').innerHTML = `${myName} (সাদা) <i class="fas fa-user" style="color:#10b981; font-size:12px;"></i>`;
+            document.querySelector('.bottom-player .player-rating').innerHTML = `<i class="fas fa-trophy" style="color:var(--gold-light); font-size:10px;"></i> লোকাল প্লেয়ার`;
+            
+            initGame();
+        }
+
+        // --- 16 Guti Mode Starters ---
+        function startGutiLocalMatch() {
+            if (typeof gutiGame !== 'undefined') {
+                gutiGame.setMode('local');
+            }
+            showScreen('gutiScreen');
+        }
+
+        function startGutiBotMatch() {
+            window.currentGameType = 'guti';
+            if (typeof gutiGame !== 'undefined') {
+                gutiGame.setMode('bot', 'চেস বট (লেভেল ১)');
+            }
+            showScreen('gutiScreen');
+        }
+
+        function startGutiOnlineMatch() {
+            window.currentGameType = 'guti';
+            if (typeof gutiGame !== 'undefined') {
+                gutiGame.setMode('online', 'অনলাইন প্লেয়ার');
+            }
+            showScreen('onlineScreen');
+        }
+
+        function sendGameInvite(phone, name) {
+            if (phone.startsWith('bot_')) {
+                showAlert('অপেক্ষায় থাকুন', `${name}-কে ইনভাইট পাঠানো হয়েছে!`);
+                setTimeout(() => {
+                    closeAlertModal();
+                    
+                    let isGuti = (window.currentGameType === 'guti');
+
+                    if (isGuti) {
+                        if (typeof gutiGame !== 'undefined') {
+                            gutiGame.setMode('bot', name);
+                        }
+                        showScreen('gutiScreen');
+                    } else {
+                        gameMode = 'bot';
+                        myColor = 'w';
+                        opponentName = name;
+                        
+                        showScreen('gameScreen');
+                        document.getElementById('gameScreenTitle').innerText = 'বট ম্যাচ';
+                        document.querySelector('.top-player .player-name-game').innerHTML = `${opponentName} <i class="fas fa-robot" style="color:#9ca3af; font-size:12px;"></i>`;
+                        document.querySelector('.top-player .player-rating').innerText = '🤖 চেস এআই (AI)';
+                        
+                        // Reset bottom player for bot match (just in case they played local before)
+                        const myName = window.CURRENT_USER_NAME || 'খেলোয়াড়';
+                        document.querySelector('.bottom-player .player-name-game').innerHTML = `${myName} <i class="fas fa-flag text-green"></i>`;
+                        document.querySelector('.bottom-player .player-rating').innerHTML = `<i class="fas fa-trophy" style="color:var(--gold-light); font-size:10px;"></i> 1842`;
+                        
+                        initGame();
+                    }
+                }, 1500);
+                return;
+            }
+
+            if (typeof FirebaseManager !== 'undefined') {
+                FirebaseManager.sendInvite(phone, name);
+                showAlert('অপেক্ষায় থাকুন', `${name}-কে ইনভাইট পাঠানো হয়েছে!`);
+            }
+        }
+
+        function handleInviteResponse(status) {
+            document.getElementById('inviteModal').style.display = 'none';
+            if (typeof FirebaseManager !== 'undefined' && pendingHost) {
+                FirebaseManager.respondToInvite(pendingHost, status);
+                if (status === 'accepted') {
+                    // Wait for listenForGameStart to trigger
+                }
+            }
+        }
+
+        function startOnlineMatch(opponent, flipBoard) {
+            // Determine which game we are playing by checking gameMode
+            // For chess gameMode='online', for guti it's also 'online'
+            // We can check if the active screen was guti before, or better pass it in
+            // To be safe, check if gutiGame has a mode online or just check a global
+            let isGuti = (window.currentGameType === 'guti');
+
+            if (isGuti) {
+                if (typeof gutiGame !== 'undefined') {
+                    gutiGame.setMode('online', opponent);
+                }
+                showScreen('gutiScreen');
+            } else {
+                showScreen('gameScreen');
+                document.getElementById('gameScreenTitle').innerText = 'অনলাইন ম্যাচ';
+                document.querySelector('.top-player .player-name-game').innerHTML = `${opponent} <i class="fas fa-globe" style="color:#9ca3af; font-size:12px;"></i>`;
+                document.querySelector('.top-player .player-rating').innerText = '🌐 অনলাইন প্লেয়ার';
+                
+                // Reset bottom player for online match
+                const myName = window.CURRENT_USER_NAME || 'খেলোয়াড়';
+                document.querySelector('.bottom-player .player-name-game').innerHTML = `${myName} <i class="fas fa-flag text-green"></i>`;
+                document.querySelector('.bottom-player .player-rating').innerHTML = `<i class="fas fa-trophy" style="color:var(--gold-light); font-size:10px;"></i> 1842`;
+                
+                initGame();
+                if (flipBoard) {
+                    // Future enhancement: flip the board visually for black
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বোর্ড গেম - বাংলাদেশের সেরা অনলাইন বোর্ড গেম প্ল্যাটফর্ম (দাবা, ১৬ গুটি ও ক্যারম)</title>
+    <meta name="description" content="বোর্ড গেম প্ল্যাটফর্মে বন্ধুদের সাথে খেলুন দাবা, ঐতিহ্যবাহী ১৬ গুটি ও ক্যারম। অনলাইন মাল্টিপ্লেয়ার, স্মার্ট AI বট এবং লোকাল মোড। কোনো বিজ্ঞাপন ছাড়া সরাসরি ব্রাউজারে খেলুন।">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;600;700;800;900&family=Cinzel:wght@700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="returnHubBanner" style="display: none; background: linear-gradient(90deg, #1e293b, #0f172a); border-bottom: 1px solid rgba(245, 209, 121, 0.3); padding: 10px 20px; text-align: center; position: sticky; top: 0; z-index: 9999;">
+        <span style="color: #fff; font-size: 14px; margin-right: 15px;">আপনি বর্তমানে লগইন অবস্থায় আছেন।</span>
+        <a href="../index.html" style="background: var(--gold-gradient); color: #000; padding: 6px 16px; border-radius: 20px; text-decoration: none; font-weight: bold; font-size: 13px;">গেম হাবে ফিরে যান ➔</a>
+    </div>
+
+    <!-- Top Glassmorphic Navigation Bar -->
+    <nav class="landing-nav">
+        <a href="#" class="ln-brand">
+            <div class="ln-logo-icon">👑</div>
+            <span class="ln-brand-text">বোর্ড গেম</span>
+            <span class="ln-pro-badge">PRO ARENA</span>
+        </a>
+
+        <div class="ln-right">
+            <div class="live-ticker-badge">
+                <span class="live-emerald-dot"></span>
+                <span>১,২৪৮+ খেলোয়াড় অনলাইনে</span>
+            </div>
+            <div class="ln-links">
+                <a href="#games-showcase" class="ln-link">আমাদের গেমস</a>
+                <a href="#features-section" class="ln-link">কেন সেরা?</a>
+                <a href="#how-to-play" class="ln-link">কীভাবে খেলবেন</a>
+            </div>
+            <a href="#login-section" class="ln-cta-btn">এখনই খেলুন ➔</a>
+        </div>
+    </nav>
+
+    <!-- Main Hero Section -->
+    <div class="landing-wrapper">
+        <!-- Background Depth & Ambient Glows -->
+        <div class="landing-bg-mesh"></div>
+        <div class="landing-glow-1"></div>
+        <div class="landing-glow-2"></div>
+
+        <div class="landing-content">
+            <!-- LEFT SIDE: Hero Typography & Interactive Mini Showcase -->
+            <div class="landing-left">
+                <div class="ll-badge">
+                    <span class="pulse-dot"></span>
+                    বাংলাদেশের ১ নম্বর অনলাইন ও অফলাইন বোর্ড গেম প্ল্যাটফর্ম
+                </div>
+                
+                <h1 class="ll-title">
+                    বুদ্ধি ও কৌশলের<br>
+                    <span class="gold-gradient-text">রাজকীয় লড়াই</span>
+                </h1>
+                
+                <p class="ll-subtitle">
+                    দাবা, ১৬ গুটি এবং ক্যারম খেলুন বন্ধুদের সাথে বা স্মার্ট AI বটের বিরুদ্ধে। কোনো ডাউনলোড বা বিরক্তিকর বিজ্ঞাপন ছাড়াই সরাসরি ব্রাউজারে!
+                </p>
+
+                <!-- AAA Game Showcase Cards (Replaces Old White Cards) -->
+                <div class="hero-game-showcase">
+                    <div class="showcase-grid">
+                        <div class="showcase-card chess-card" onclick="document.getElementById('phone-input').focus()">
+                            <div class="sc-icon-box sc-chess-icon"><i class="fa-solid fa-chess-pawn"></i></div>
+                            <div class="sc-info">
+                                <div class="sc-title">দাবা (Chess)</div>
+                                <div class="sc-desc">গ্র্যান্ডমাস্টার AI বট ও রিয়েল-টাইম অনলাইন ম্যাচ</div>
+                                <div class="sc-tags">
+                                    <span class="sc-tag">অনলাইন</span>
+                                    <span class="sc-tag">বট মোড</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="showcase-card guti-card" onclick="document.getElementById('phone-input').focus()">
+                            <div class="sc-icon-box sc-guti-icon"><i class="fa-solid fa-bullseye"></i></div>
+                            <div class="sc-info">
+                                <div class="sc-title">১৬ গুটি (Guti)</div>
+                                <div class="sc-desc">ঐতিহ্যবাহী বাংলার জনপ্রিয় ১৬ গুটি গেম</div>
+                                <div class="sc-tags">
+                                    <span class="sc-tag">লোকাল ২/৪</span>
+                                    <span class="sc-tag">অনলাইন</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="showcase-card carrom-card" onclick="document.getElementById('phone-input').focus()">
+                            <div class="sc-icon-box sc-carrom-icon"><i class="fa-solid fa-dot-circle"></i></div>
+                            <div class="sc-info">
+                                <div class="sc-title">ক্যারম (Carrom)</div>
+                                <div class="sc-desc">রিয়েল ফিজিক্স ও স্মুথ স্ট্রাইকার কন্ট্রোল</div>
+                                <div class="sc-tags">
+                                    <span class="sc-tag">ফিজিক্স</span>
+                                    <span class="sc-tag">মাল্টিপ্লেয়ার</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stat Pills Row -->
+                <div class="ll-stats-row">
+                    <div class="stat-pill"><i class="fa-solid fa-gamepad"></i> ৩টি প্রিমিয়াম গেম</div>
+                    <div class="stat-pill"><i class="fa-solid fa-robot"></i> প্রো এআই বট</div>
+                    <div class="stat-pill"><i class="fa-solid fa-bolt"></i> শূন্য ল্যাগ মাল্টিপ্লেয়ার</div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE: Luxury Glassmorphic Subscription / Login Card -->
+            <div class="landing-right" id="login-section">
+                <div class="lr-glass-card">
+                    <h2 class="lr-title">খেলতে সাবস্ক্রাইব করুন</h2>
+                    <p class="lr-subtitle">মোবাইল নম্বর দিয়ে শুরু করুন।<br>মাত্র ৫.৫৬ টাকা / দিন (ভ্যাট সহ) পান সব সুবিধা।</p>
+
+                    <div class="lr-stepper">
+                        <div class="step active">
+                            <div class="step-num">১</div> নম্বর দিন
+                        </div>
+                        <div class="step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="step">
+                            <div class="step-num">২</div> ওটিপি
+                        </div>
+                        <div class="step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="step">
+                            <div class="step-num">৩</div> খেলুন
+                        </div>
+                    </div>
+
+                    <div class="lr-benefits">
+                        <div class="lrb-item">
+                            <i class="fa-solid fa-circle-check gold-check"></i>
+                            <span>দাবা, ১৬ গুটি ও ক্যারম - সব গেম আনলক</span>
+                        </div>
+                        <div class="lrb-item">
+                            <i class="fa-solid fa-circle-check gold-check"></i>
+                            <span>ব্রাউজারে সরাসরি খেলার সুবিধা (নো-ডাউনলোড)</span>
+                        </div>
+                        <div class="lrb-item">
+                            <i class="fa-solid fa-circle-check gold-check"></i>
+                            <span>২৪/৭ নিরবচ্ছিন্ন ও সম্পূর্ণ বিজ্ঞাপনমুক্ত</span>
+                        </div>
+                    </div>
+
+                    <div class="lr-input-wrap">
+                        <div class="lr-prefix">BD +88</div>
+                        <input type="tel" id="phone-input" placeholder="01XXXXXXXXX" required autocomplete="off">
+                    </div>
+
+                    <div class="lr-warning">
+                        <i class="fa-solid fa-circle-info" style="margin-top:2px;"></i>
+                        <div>মাত্র ৫.৫৬ টাকা / দিন চার্জ (ভ্যাট সহ)। শুধুমাত্র রবি ও এয়ারটেল গ্রাহকদের জন্য।</div>
+                    </div>
+
+                    <button id="auth-btn" class="primary-btn glow-btn" onclick="handleLogin()">
+                        গেম খেলা শুরু করুন ➔
+                    </button>
+                    
+                    <div id="loader" style="display:none; text-align:center; color:var(--gold-light); margin-top:15px; font-size:14px; font-weight:700;">
+                        <i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i> অপেক্ষা করুন...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dedicated Games Arcade Showcase Section -->
+    <section class="landing-games-showcase" id="games-showcase">
+        <div class="landing-section-header">
+            <span class="lsh-badge"><i class="fa-solid fa-crown"></i> গেম হাবে যা থাকছে</span>
+            <h2>আমাদের প্রিমিয়াম গেমস</h2>
+            <p class="lsh-subtitle">আন্তর্জাতিক মানের দাবা, বাংলার ঐতিহ্যবাহী ১৬ গুটি এবং রোমাঞ্চকর ক্যারম বোর্ড গেম খেলুন যেকোনো ডিভাইস থেকে</p>
+        </div>
+
+        <div class="arcade-grid">
+            <!-- Chess Card -->
+            <div class="arcade-card chess-card">
+                <div class="arcade-bg" style="background-image: url('../golden_king.png');"></div>
+                <div class="arcade-overlay"></div>
+                <div class="arcade-content">
+                    <div>
+                        <div class="arcade-header">
+                            <div class="arcade-icon-circle"><i class="fa-solid fa-chess-pawn"></i></div>
+                            <span class="arcade-badge">PRO ARENA</span>
+                        </div>
+                        <h3 class="arcade-title">দাবা (Chess Pro)</h3>
+                        <p class="arcade-desc">আন্তর্জাতিক নিয়মে দাবা খেলুন। বন্ধুদের চ্যালেঞ্জ করুন অথবা স্মার্ট AI বটের বিভিন্ন লেভেলে (সহজ, মাঝারি, কঠিন, এক্সপার্ট) নিজের দক্ষতা যাচাই করুন।</p>
+                        <div class="arcade-tags">
+                            <span class="game-tag">অনলাইন ম্যাচ</span>
+                            <span class="game-tag">বট মোড</span>
+                            <span class="game-tag">র‍্যাংকড</span>
+                        </div>
+                    </div>
+                    <a href="#login-section" class="arcade-btn" onclick="document.getElementById('phone-input').focus()">
+                        <span>দাবা খেলুন</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 16 Guti Card -->
+            <div class="arcade-card guti-card">
+                <div class="arcade-bg" style="background-image: url('../sholo_guti_bg.png');"></div>
+                <div class="arcade-overlay"></div>
+                <div class="arcade-content">
+                    <div>
+                        <div class="arcade-header">
+                            <div class="arcade-icon-circle"><i class="fa-solid fa-bullseye"></i></div>
+                            <span class="arcade-badge">ঐতিহ্যবাহী</span>
+                        </div>
+                        <h3 class="arcade-title">১৬ গুটি (Sholo Guti Arena)</h3>
+                        <p class="arcade-desc">বাংলার আবহমান কালের ঐতিহ্যবাহী ১৬ গুটি গেম। এখন ডিজিটাল বোর্ডে স্মার্ট চাল এবং বন্ধুদের সাথে অফলাইন বা অনলাইনে খেলার সেরা অভিজ্ঞতা।</p>
+                        <div class="arcade-tags">
+                            <span class="game-tag">ঐতিহ্যবাহী</span>
+                            <span class="game-tag">লোকাল মোড</span>
+                            <span class="game-tag">এআই বট</span>
+                        </div>
+                    </div>
+                    <a href="#login-section" class="arcade-btn" onclick="document.getElementById('phone-input').focus()">
+                        <span>১৬ গুটি খেলুন</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Carrom Card -->
+            <div class="arcade-card carrom-card">
+                <div class="arcade-bg" style="background-image: url('../carrom_bg.png');"></div>
+                <div class="arcade-overlay"></div>
+                <div class="arcade-content">
+                    <div>
+                        <div class="arcade-header">
+                            <div class="arcade-icon-circle"><i class="fa-solid fa-dot-circle"></i></div>
+                            <span class="arcade-badge">PHYSICS 3D</span>
+                        </div>
+                        <h3 class="arcade-title">ক্যারম (Carrom Masters)</h3>
+                        <p class="arcade-desc">বাস্তবসম্মত ফিজিক্স ও মসৃণ স্ট্রাইকার কন্ট্রোলে ক্যারম বোর্ড। বন্ধুদের সাথে একই স্ক্রিনে অথবা অনলাইনে জমজমাট ক্যারম ম্যাচ।</p>
+                        <div class="arcade-tags">
+                            <span class="game-tag">রিয়েল ফিজিক্স</span>
+                            <span class="game-tag">২ ও ৪ প্লেয়ার</span>
+                            <span class="game-tag">স্মুথ কন্ট্রোল</span>
+                        </div>
+                    </div>
+                    <a href="#login-section" class="arcade-btn" onclick="document.getElementById('phone-input').focus()">
+                        <span>ক্যারম খেলুন</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Play Here - Glassmorphic Features Grid -->
+    <section class="landing-features-section" id="features-section">
+        <div class="landing-section-header">
+            <span class="lsh-badge"><i class="fa-solid fa-star"></i> আমাদের বিশেষত্ব</span>
+            <h2>কেন আমাদের বোর্ড গেম সেরা?</h2>
+            <p class="lsh-subtitle">নিরবচ্ছিন্ন ও নিরাপদ গেমিং অভিজ্ঞতার জন্য আমরা দিচ্ছি সব সেরা ফিচার</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="f-card">
+                <div class="fc-icon"><i class="fa-solid fa-globe"></i></div>
+                <div class="fc-title">রিয়েল-টাইম অনলাইন মাল্টিপ্লেয়ার</div>
+                <div class="fc-subtitle">দেশের যেকোনো প্রান্ত থেকে বন্ধুদের সাথে লাইভ ম্যাচ খেলুন। রুম তৈরি করুন এবং সহজেই আমন্ত্রণ জানান।</div>
+            </div>
+            <div class="f-card">
+                <div class="fc-icon"><i class="fa-solid fa-robot"></i></div>
+                <div class="fc-title">স্মার্ট ও শক্তিশালী AI বট</div>
+                <div class="fc-subtitle">নতুন থেকে এক্সপার্ট- ৪টি ভিন্ন লেভেলের AI বটের সাথে অনুশীলন করে নিজের দক্ষতা বাড়িয়ে নিন।</div>
+            </div>
+            <div class="f-card">
+                <div class="fc-icon"><i class="fa-solid fa-user-group"></i></div>
+                <div class="fc-title">লোকাল মাল্টিপ্লেয়ার মোড</div>
+                <div class="fc-subtitle">ইন্টারনেট ছাড়াও একই ডিভাইসে ২ বা ৪ বন্ধু বসে একসাথে খেলার দুর্দান্ত ও জমজমাট মজা।</div>
+            </div>
+
+            <div class="f-card">
+                <div class="fc-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="fc-title">১০০% বিজ্ঞাপনমুক্ত ও ল্যাগ-মুক্ত</div>
+                <div class="fc-subtitle">বিরক্তিকর কোনো বিজ্ঞাপন বা পপআপ নেই। অতি দ্রুত লোডিং এবং একদম পরিষ্কার গেমপ্লে।</div>
+            </div>
+            <div class="f-card">
+                <div class="fc-icon"><i class="fa-solid fa-trophy"></i></div>
+                <div class="fc-title">লিডারবোর্ড ও র‍্যাংক ব্যবস্থা</div>
+                <div class="fc-subtitle">প্রতিটি জয়ে পয়েন্ট অর্জন করুন, লিডারবোর্ডের শীর্ষে উঠুন এবং চ্যাম্পিয়ন খেতাব জিতুন।</div>
+            </div>
+            <div class="f-card">
+                <div class="fc-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="fc-title">সম্পূর্ণ নিরাপদ ও ফেয়ার প্লে</div>
+                <div class="fc-subtitle">রবি ও এয়ারটেল পেমেন্ট সুরক্ষার সাথে ১০০% নিরাপদ ও ফেয়ার গেমিং প্ল্যাটফর্ম।</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Start - 3 Step Guide -->
+    <section class="landing-steps-section" id="how-to-play">
+        <div class="landing-section-header">
+            <span class="lsh-badge"><i class="fa-solid fa-forward-step"></i> শুরু করুন মুহূর্তেই</span>
+            <h2>মাত্র ৩টি সহজ ধাপে শুরু করুন</h2>
+            <p class="lsh-subtitle">কোনো অ্যাপ ইন্সটল বা জটিল রেজিস্ট্রেশন ছাড়াই খেলতে শুরু করুন</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card-item">
+                <div class="step-circle">১</div>
+                <h3 class="step-card-title">নম্বর দিন</h3>
+                <p class="step-card-desc">আপনার রবি বা এয়ারটেল মোবাইল নম্বর লিখে "গেম খেলা শুরু করুন" বাটনে ক্লিক করুন।</p>
+            </div>
+            <div class="step-card-item">
+                <div class="step-circle">২</div>
+                <h3 class="step-card-title">ওটিপি ভেরিফাই</h3>
+                <p class="step-card-desc">আপনার মোবাইলে আসা ৪ ডিজিটের ওটিপি কোডটি দিয়ে সাবস্ক্রিপশন ভেরিফাই করুন।</p>
+            </div>
+            <div class="step-card-item">
+                <div class="step-circle">৩</div>
+                <h3 class="step-card-title">গেম বেছে নিন</h3>
+                <p class="step-card-desc">দাবা, ১৬ গুটি বা ক্যারম- আপনার পছন্দের গেম সিলেক্ট করে এখনই খেলা শুরু করুন!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Winner Ticker Strip -->
+    <div class="landing-live-strip">
+        <div class="live-strip-content">
+            <span class="ticker-item"><i class="fa-solid fa-trophy ticker-icon"></i> তানভীর ১৬ গুটিতে জিতেছে</span>
+            <span>•</span>
+            <span class="ticker-item"><i class="fa-solid fa-crown ticker-icon"></i> সাকিব দাবায় চেকমেট করেছে</span>
+            <span>•</span>
+            <span class="ticker-item"><i class="fa-solid fa-bullseye ticker-icon"></i> রাশেদ ক্যারমে জিতেছে</span>
+            <span>•</span>
+            <span class="ticker-item"><i class="fa-solid fa-star ticker-icon"></i> মেহজাবিন দাবায় র‍্যাংক ১ এ পৌঁছেছে</span>
+            <span>•</span>
+            <span class="ticker-item"><i class="fa-solid fa-trophy ticker-icon"></i> ফাহিম ১৬ গুটি লোকালে জিতেছে</span>
+            <span>•</span>
+            <span class="ticker-item"><i class="fa-solid fa-bolt ticker-icon"></i> অনন্যা ক্যারমে নতুন রেকর্ড করেছে</span>
+            <span>•</span>
+            <span class="ticker-item"><i class="fa-solid fa-trophy ticker-icon"></i> তানভীর ১৬ গুটিতে জিতেছে</span>
+            <span>•</span>
+            <span class="ticker-item"><i class="fa-solid fa-crown ticker-icon"></i> সাকিব দাবায় চেকমেট করেছে</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div class="footer-trust-badges">
+            <span class="trust-badge"><i class="fa-solid fa-shield-check"></i> ১০০% নিরাপদ পেমেন্ট</span>
+            <span class="trust-badge"><i class="fa-solid fa-ban"></i> কোনো বিজ্ঞাপন নেই</span>
+            <span class="trust-badge"><i class="fa-solid fa-mobile-screen"></i> যেকোনো ডিভাইসে সাপোর্টেড</span>
+            <span class="trust-badge"><i class="fa-solid fa-location-dot"></i> বাংলাদেশ</span>
+        </div>
+        <p class="footer-copy">© ২০২৬ বোর্ড গেম • অনলাইন ও অফলাইন গেমিং প্ল্যাটফর্ম • সর্বস্বত্ব সংরক্ষিত</p>
+    </footer>
+
+    <!-- Custom Alert Modal -->
+    <div class="custom-alert-overlay" id="customAlertOverlay">
+        <div class="custom-alert-box">
+            <div class="custom-alert-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+            <div class="custom-alert-text" id="customAlertText">বার্তা</div>
+            <button class="custom-alert-btn" onclick="closeCustomAlert()">ঠিক আছে</button>
+        </div>
+    </div>
+
+    <script>
+        if (window.location.search.includes("logout=1")) {
+            localStorage.clear();
+        }
+
+        if (localStorage.getItem("isLoggedIn") && !window.location.search.includes("view=true") && !window.location.search.includes("preview=1")) {
+            window.location.href = "../index.html";
+        } else if (localStorage.getItem("isLoggedIn")) {
+            const banner = document.getElementById("returnHubBanner");
+            if (banner) banner.style.display = "block";
+        }
+
+        function showCustomAlert(msg) {
+            document.getElementById('customAlertText').innerText = msg;
+            document.getElementById('customAlertOverlay').classList.add('active');
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('customAlertOverlay').classList.remove('active');
+        }
+
+        async function handleLogin() {
+            const phone = document.getElementById("phone-input").value.trim();
+            const btn = document.getElementById("auth-btn");
+            const loader = document.getElementById("loader");
+            const phoneRegex = /^01[3-9]\d{8}$/;
+
+            if (!phoneRegex.test(phone)) {
+                showCustomAlert("অনুগ্রহ করে সঠিক মোবাইল নাম্বার দিন।");
+                return;
+            }
+
+            // Demo testing
+            if (phone === "01700000000" || phone === "01800000000") {
+                localStorage.setItem("phone", phone);
+                localStorage.setItem("isLoggedIn", true);
+                if (!localStorage.getItem('29card_profile')) {
+                    window.location.href = "name_setup.html";
+                } else {
+                    window.location.href = "../index.html";
+                }
+                return;
+            }
+
+            btn.style.display = "none";
+            loader.style.display = "block";
+
+            try {
+                const res = await fetch("send_otp.php", {
+                    method: "POST",
+                    body: new URLSearchParams({ user_mobile: phone })
+                });
+
+                const resText = await res.text();
+                let data;
+                try {
+                    data = JSON.parse(resText);
+                } catch (parseError) {
+                    console.error("Failed to parse JSON. Raw response:", resText);
+                    showCustomAlert("Server returned invalid data. Check console.");
+                    btn.style.display = "block";
+                    loader.style.display = "none";
+                    return;
+                }
+
+                if (data.success) {
+                    localStorage.setItem("phone", phone);
+                    localStorage.setItem("ref", data.referenceNo);
+                    window.location.href = "otp.html";
+                } else if (
+                    data.statusCode === 'E1351' ||
+                    (data.statusDetail && data.statusDetail.toLowerCase().includes("already")) ||
+                    (data.message && data.message.toLowerCase().includes("already"))
+                ) {
+                    localStorage.setItem("phone", phone);
+                    localStorage.setItem("isLoggedIn", true);
+                    if (!localStorage.getItem('29card_profile')) {
+                        window.location.href = "name_setup.html";
+                    } else {
+                        window.location.href = "../index.html";
+                    }
+                } else {
+                    showCustomAlert(data.message || "OTP failed. Try again.");
+                    btn.style.display = "block";
+                    loader.style.display = "none";
+                }
+
+            } catch (e) {
+                console.error("Login error:", e);
+                showCustomAlert("Network error: " + e.message);
+                btn.style.display = "block";
+                loader.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>

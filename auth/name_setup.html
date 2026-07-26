@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>২৯ কার্ড গেম</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="screen active" style="display: flex; justify-content: center; align-items: center;">
+            <div class="login-container" style="width: 100%; max-width: 400px; padding: 20px;">
+                <div class="login-card">
+                    <div class="otp-icon-wrap" style="margin-bottom: 15px;">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+                    
+                    <h1 class="logo" style="font-size: 1.5rem; text-transform: none;">স্বাগতম!</h1>
+                    <p class="subtitle" style="margin-bottom: 25px;">গেম খেলার জন্য আপনার একটি সুন্দর নাম সেট করুন।</p>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-pen"></i>
+                        <input type="text" id="name-input" placeholder="আপনার নাম লিখুন" required autocomplete="off" maxlength="20">
+                    </div>
+
+                    <button id="save-btn" class="primary-btn" onclick="saveName()">শুরু করুন</button>
+                    <div id="loader" style="display:none; color:var(--text-muted); margin-top:10px; font-size:14px;">অপেক্ষা করুন...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function saveName() {
+            const nameInput = document.getElementById("name-input").value.trim();
+            const btn = document.getElementById("save-btn");
+            const loader = document.getElementById("loader");
+
+            if (nameInput.length < 2) {
+                alert("দয়া করে সঠিক নাম দিন (অন্তত ২ অক্ষর)।");
+                return;
+            }
+
+            btn.disabled = true;
+            loader.style.display = "block";
+
+            // Default profile structure if not exists
+            const DEFAULT_PROFILE = {
+                name: 'প্লেয়ার',
+                nameEn: 'Player',
+                avatarEmoji: '😎',
+                level: 1,
+                xp: 0,
+                xpToNext: 500,
+                coins: 1000,
+                rank: 'ব্রোঞ্জ III'
+            };
+
+            // Get existing or create new
+            const stored = localStorage.getItem('29card_profile');
+            let profile = stored ? JSON.parse(stored) : DEFAULT_PROFILE;
+            
+            // Update name
+            profile.name = nameInput;
+            profile.nameEn = nameInput; // Also update english name
+            
+            // Save to localStorage
+            localStorage.setItem('29card_profile', JSON.stringify(profile));
+
+            // Small delay for smooth UX
+            setTimeout(() => {
+                window.location.href = "../index.html";
+            }, 800);
+        }
+
+        // Allow Enter key to submit
+        document.getElementById("name-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                saveName();
+            }
+        });
+    </script>
+</body>
+</html>

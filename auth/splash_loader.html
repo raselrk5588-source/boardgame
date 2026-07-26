@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>২৯ কার্ড গেম - লোডিং...</title>
+    <!-- Include main game styles so the splash classes match exactly -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--bg-primary);
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="screen active" style="position:relative; width:100%; height:100%; display:flex; justify-content:center; align-items:center; flex-direction:column;">
+        <div class="splash-bg-cards">
+            <div class="card-bg">♠</div>
+            <div class="card-bg">♥</div>
+            <div class="card-bg">♦</div>
+            <div class="card-bg">♣</div>
+        </div>
+        
+        <div class="particles">
+            <div class="particle" style="left:20%;animation-delay:0s"></div>
+            <div class="particle" style="left:40%;animation-delay:1s"></div>
+            <div class="particle" style="left:60%;animation-delay:2s"></div>
+            <div class="particle" style="left:80%;animation-delay:0.5s"></div>
+            <div class="particle" style="left:30%;animation-delay:1.5s"></div>
+            <div class="particle" style="left:70%;animation-delay:2.5s"></div>
+        </div>
+        
+        <div class="splash-glow"></div>
+        
+        <div class="splash-logo">
+            <div class="splash-cards-fan">
+                <div class="mini-card"><span class="suit-top">A</span><span class="suit-center">♠</span></div>
+                <div class="mini-card"><span class="suit-top">K</span><span class="suit-center">♥</span></div>
+                <div class="mini-card"><span class="suit-top">Q</span><span class="suit-center">♦</span></div>
+                <div class="mini-card"><span class="suit-top">J</span><span class="suit-center">♣</span></div>
+            </div>
+            <div class="splash-title">২৯ কার্ড গেম</div>
+            <div class="splash-subtitle">CARD GAME</div>
+        </div>
+
+        <div class="splash-loading">
+            <div class="splash-loading-bar">
+                <div class="splash-loading-fill"></div>
+            </div>
+            <div class="splash-loading-text">লোড হচ্ছে...</div>
+        </div>
+    </div>
+
+    <script>
+        // Redirect to name setup after loading animation
+        setTimeout(() => {
+            window.location.href = "name_setup.html";
+        }, 2500);
+    </script>
+</body>
+</html>
