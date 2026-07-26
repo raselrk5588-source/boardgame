@@ -310,7 +310,7 @@ body {
     display: flex;
     flex-direction: column;
     background: var(--bg-color);
-    padding: 20px 20px 90px; /* Extra bottom padding for nav */
+    padding: 20px 20px 105px 20px; /* Extra bottom padding for fixed nav */
     overflow-y: auto;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
@@ -485,19 +485,22 @@ body {
 
 /* --- Bottom Navigation --- */
 .bottom-nav {
-    position: absolute;
-    bottom: 0;
+    position: fixed !important;
+    bottom: 0 !important;
     left: 0;
+    right: 0;
     width: 100%;
-    height: 70px;
-    background: #0d141e;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    height: 75px;
+    background: rgba(13, 20, 30, 0.98);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 0 10px;
-    z-index: 100;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 12px)) 10px;
+    z-index: 99999 !important;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.7);
 }
 
 .nav-item {
