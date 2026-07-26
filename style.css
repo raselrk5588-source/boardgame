@@ -310,7 +310,7 @@ body {
     display: flex;
     flex-direction: column;
     background: var(--bg-color);
-    padding: 20px 20px 105px 20px; /* Extra bottom padding for fixed nav */
+    padding: 20px 20px 150px 20px !important; /* Extra bottom padding so bottom content is never cut off by fixed nav */
     overflow-y: auto;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
