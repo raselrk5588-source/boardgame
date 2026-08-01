@@ -112,7 +112,18 @@
                 "fa-user-times",
                 "linear-gradient(135deg, #ef4444, #b91c1c)",
                 "হ্যাঁ, বাতিল করুন",
-                function() {
+                async function() {
+                    const phone = localStorage.getItem("phone");
+                    if (phone) {
+                        try {
+                            await fetch("auth/unsubscribe.php", {
+                                method: "POST",
+                                body: new URLSearchParams({ user_mobile: phone })
+                            });
+                        } catch(e) {
+                            console.error("Unsubscribe error", e);
+                        }
+                    }
                     localStorage.clear();
                     window.location.href = "auth/login.html";
                 }
