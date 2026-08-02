@@ -74,7 +74,7 @@ $password = $config['password'];
 
 $requestData = array(
     'applicationId' => $appId,
-    // password removed; injected by proxy
+    'password' => $password,
     'subscriberId' => $subscriberId,
     'version' => '1.0',
     'action' => '0',
@@ -102,6 +102,29 @@ $subscriptionStatus = $response['subscriptionStatus'] ?? 'UNKNOWN';
 $success =
     $statusCode === 'S1000' ||
     strtoupper((string)$subscriptionStatus) === 'UNREGISTERED';
+
+if ($success) {
+    $smsData = array(
+        'applicationId' => $appId,
+        'password' => $password,
+        'version' => '1.0',
+        'destinationAddresses' => array($subscriberId),
+        'message' => 'Apni safolbhabe Board Game service theke unsubscribe korechen. Abar khelte chaile login korun.'
+    );
+    
+    $ch2 = curl_init();
+    curl_setopt($ch2, CURLOPT_URL, 'https://portal.rtsquad.com/api/bdapps/proxy');
+    curl_setopt($ch2, CURLOPT_POST, true);
+    curl_setopt($ch2, CURLOPT_POSTFIELDS, json_encode($smsData));
+    curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch2, CURLOPT_HTTPHEADER, array(
+        "Content-Type: application/json",
+        "X-Target-URL: https://developer.bdapps.com/sms/send"
+    ));
+    curl_setopt($ch2, CURLOPT_TIMEOUT, 10);
+    curl_exec($ch2);
+    curl_close($ch2);
+}
 
 echo json_encode([
     'success' => $success,

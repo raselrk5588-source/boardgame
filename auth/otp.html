@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
     <meta charset="UTF-8">
     <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>২৯ কার্ড গেম</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>">
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -29,9 +31,17 @@
         }
 
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         /* Floating Particles */
@@ -45,6 +55,7 @@
             z-index: 0;
             animation: floatBlob 8s ease-in-out infinite alternate;
         }
+
         body.otp-body::before {
             width: 350px;
             height: 350px;
@@ -52,6 +63,7 @@
             top: -80px;
             left: -80px;
         }
+
         body.otp-body::after {
             width: 300px;
             height: 300px;
@@ -62,8 +74,13 @@
         }
 
         @keyframes floatBlob {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(40px, 30px) scale(1.15); }
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(40px, 30px) scale(1.15);
+            }
         }
 
         /* OTP Card */
@@ -113,6 +130,7 @@
             justify-content: center;
             border-radius: 50%;
         }
+
         .otp-close:hover {
             color: #fff;
             background: rgba(255, 255, 255, 0.1);
@@ -133,8 +151,17 @@
         }
 
         @keyframes iconPulse {
-            0%, 100% { box-shadow: 0 8px 30px rgba(108, 92, 231, 0.4); transform: scale(1); }
-            50% { box-shadow: 0 8px 40px rgba(108, 92, 231, 0.6); transform: scale(1.05); }
+
+            0%,
+            100% {
+                box-shadow: 0 8px 30px rgba(108, 92, 231, 0.4);
+                transform: scale(1);
+            }
+
+            50% {
+                box-shadow: 0 8px 40px rgba(108, 92, 231, 0.6);
+                transform: scale(1.05);
+            }
         }
 
         .otp-icon-wrap i {
@@ -211,11 +238,27 @@
         }
 
         @keyframes shakeInput {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-6px); }
-            40% { transform: translateX(6px); }
-            60% { transform: translateX(-4px); }
-            80% { transform: translateX(4px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-4px);
+            }
+
+            80% {
+                transform: translateX(4px);
+            }
         }
 
         /* Verify Button */
@@ -260,15 +303,18 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
             transition: none;
         }
+
         .otp-verify-btn:not(:disabled):hover::after {
             animation: shimmer 0.8s ease forwards;
         }
 
         @keyframes shimmer {
-            to { left: 100%; }
+            to {
+                left: 100%;
+            }
         }
 
         /* Loader Spinner */
@@ -281,19 +327,24 @@
             font-size: 0.9rem;
             margin-bottom: 16px;
         }
+
         .otp-loader.visible {
             display: flex;
         }
+
         .otp-spinner {
             width: 18px;
             height: 18px;
-            border: 2px solid rgba(255,255,255,0.15);
+            border: 2px solid rgba(255, 255, 255, 0.15);
             border-top-color: #a29bfe;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Resend Section */
@@ -301,6 +352,7 @@
             color: rgba(255, 255, 255, 0.45);
             font-size: 0.85rem;
         }
+
         .otp-resend-link {
             color: #a29bfe;
             font-weight: 600;
@@ -308,15 +360,18 @@
             text-decoration: none;
             transition: color 0.2s;
         }
+
         .otp-resend-link:hover {
             color: #6c5ce7;
             text-decoration: underline;
         }
+
         .otp-resend-link.disabled {
             color: rgba(255, 255, 255, 0.3);
             cursor: not-allowed;
             pointer-events: none;
         }
+
         .otp-timer {
             color: #00cec9;
             font-weight: 600;
@@ -337,10 +392,12 @@
             visibility: hidden;
             transition: all 0.4s ease;
         }
+
         .otp-success-overlay.visible {
             opacity: 1;
             visibility: visible;
         }
+
         .otp-success-circle {
             width: 100px;
             height: 100px;
@@ -353,9 +410,13 @@
             animation: successPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             transform: scale(0);
         }
+
         @keyframes successPop {
-            to { transform: scale(1); }
+            to {
+                transform: scale(1);
+            }
         }
+
         .otp-success-circle i {
             font-size: 2.8rem;
             color: #fff;
@@ -371,6 +432,7 @@
             transition: opacity 0.3s;
             opacity: 0;
         }
+
         .otp-error-msg.visible {
             opacity: 1;
         }
@@ -381,18 +443,21 @@
                 padding: 36px 24px 32px;
                 margin: 16px;
             }
+
             .otp-inputs input {
                 width: 40px;
                 height: 48px;
                 font-size: 1.2rem;
                 border-radius: 10px;
             }
+
             .otp-inputs {
                 gap: 6px;
             }
         }
     </style>
 </head>
+
 <body class="otp-body">
 
     <!-- OTP Card -->
@@ -410,7 +475,8 @@
 
         <!-- 6 Separate OTP Input Boxes -->
         <div class="otp-inputs" id="otp-inputs">
-            <input type="tel" maxlength="1" class="otp-digit" data-index="0" autocomplete="one-time-code" inputmode="numeric">
+            <input type="tel" maxlength="1" class="otp-digit" data-index="0" autocomplete="one-time-code"
+                inputmode="numeric">
             <input type="tel" maxlength="1" class="otp-digit" data-index="1" inputmode="numeric">
             <input type="tel" maxlength="1" class="otp-digit" data-index="2" inputmode="numeric">
             <input type="tel" maxlength="1" class="otp-digit" data-index="3" inputmode="numeric">
@@ -450,220 +516,221 @@
     </div>
 
     <script>
-    // ===== OTP Input Logic =====
-    const otpDigits = document.querySelectorAll('.otp-digit');
-    const errorMsg = document.getElementById('error-msg');
+        // ===== OTP Input Logic =====
+        const otpDigits = document.querySelectorAll('.otp-digit');
+        const errorMsg = document.getElementById('error-msg');
 
-    // Show phone number
-    const storedPhone = localStorage.getItem('phone');
-    if (storedPhone) {
-        const masked = storedPhone.slice(0, 4) + '****' + storedPhone.slice(-3);
-        document.getElementById('phone-display').textContent = masked;
-    }
+        // Show phone number
+        const storedPhone = localStorage.getItem('phone');
+        if (storedPhone) {
+            const masked = storedPhone.slice(0, 4) + '****' + storedPhone.slice(-3);
+            document.getElementById('phone-display').textContent = masked;
+        }
 
-    // Auto-focus first input
-    otpDigits[0].focus();
+        // Auto-focus first input
+        otpDigits[0].focus();
 
-    otpDigits.forEach((input, idx) => {
-        input.addEventListener('input', (e) => {
-            const val = e.target.value;
-            // Only allow digits
-            e.target.value = val.replace(/[^0-9]/g, '');
-            
-            if (e.target.value && idx < 5) {
-                otpDigits[idx + 1].focus();
-            }
-            
-            // Toggle filled class
-            if (e.target.value) {
-                e.target.classList.add('filled');
-                e.target.classList.remove('error');
-            } else {
-                e.target.classList.remove('filled');
-            }
+        otpDigits.forEach((input, idx) => {
+            input.addEventListener('input', (e) => {
+                const val = e.target.value;
+                // Only allow digits
+                e.target.value = val.replace(/[^0-9]/g, '');
 
-            // Clear error
-            hideError();
+                if (e.target.value && idx < 5) {
+                    otpDigits[idx + 1].focus();
+                }
 
-            // Auto-verify when all 6 digits are filled
-            const otp = getOtpValue();
-            if (otp.length === 6) {
-                verifyOtp();
-            }
-        });
+                // Toggle filled class
+                if (e.target.value) {
+                    e.target.classList.add('filled');
+                    e.target.classList.remove('error');
+                } else {
+                    e.target.classList.remove('filled');
+                }
 
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' && !e.target.value && idx > 0) {
-                otpDigits[idx - 1].focus();
-                otpDigits[idx - 1].value = '';
-                otpDigits[idx - 1].classList.remove('filled');
-            }
-        });
+                // Clear error
+                hideError();
 
-        // Handle paste
-        input.addEventListener('paste', (e) => {
-            e.preventDefault();
-            const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '').slice(0, 6);
-            pasted.split('').forEach((char, i) => {
-                if (otpDigits[i]) {
-                    otpDigits[i].value = char;
-                    otpDigits[i].classList.add('filled');
+                // Auto-verify when all 6 digits are filled
+                const otp = getOtpValue();
+                if (otp.length === 6) {
+                    verifyOtp();
                 }
             });
-            if (pasted.length === 6) {
-                otpDigits[5].focus();
-                verifyOtp();
-            } else if (pasted.length > 0) {
-                otpDigits[Math.min(pasted.length, 5)].focus();
-            }
-        });
 
-        // Focus animation
-        input.addEventListener('focus', () => {
-            input.parentElement.classList.add('focused');
-        });
-        input.addEventListener('blur', () => {
-            input.parentElement.classList.remove('focused');
-        });
-    });
-
-    function getOtpValue() {
-        return Array.from(otpDigits).map(d => d.value).join('');
-    }
-
-    function showError(msg) {
-        errorMsg.textContent = msg;
-        errorMsg.classList.add('visible');
-        otpDigits.forEach(d => d.classList.add('error'));
-    }
-
-    function hideError() {
-        errorMsg.classList.remove('visible');
-        otpDigits.forEach(d => d.classList.remove('error'));
-    }
-
-    // ===== Resend Timer =====
-    let resendSeconds = 30;
-    const resendLink = document.getElementById('resend-link');
-    const resendTimer = document.getElementById('resend-timer');
-
-    function toBengaliNum(n) {
-        const bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-        return String(n).split('').map(d => bn[parseInt(d)] || d).join('');
-    }
-
-    function startResendTimer() {
-        resendSeconds = 30;
-        resendLink.classList.add('disabled');
-        resendTimer.style.display = 'inline';
-        
-        const interval = setInterval(() => {
-            resendSeconds--;
-            const mins = String(Math.floor(resendSeconds / 60)).padStart(2, '0');
-            const secs = String(resendSeconds % 60).padStart(2, '0');
-            resendTimer.textContent = `(${toBengaliNum(mins)}:${toBengaliNum(secs)})`;
-            
-            if (resendSeconds <= 0) {
-                clearInterval(interval);
-                resendLink.classList.remove('disabled');
-                resendTimer.style.display = 'none';
-            }
-        }, 1000);
-    }
-
-    startResendTimer();
-
-    async function resendOtp() {
-        const phone = localStorage.getItem('phone');
-        if (!phone) return;
-
-        resendLink.textContent = 'পাঠানো হচ্ছে...';
-        
-        try {
-            const res = await fetch('send_otp.php', {
-                method: 'POST',
-                body: new URLSearchParams({ user_mobile: phone })
-            });
-            const data = await res.json();
-            if (data.success) {
-                localStorage.setItem('ref', data.referenceNo);
-                resendLink.textContent = 'আবার পাঠান';
-                startResendTimer();
-            } else {
-                resendLink.textContent = 'আবার পাঠান';
-                showError(data.message || 'পাঠাতে ব্যর্থ');
-            }
-        } catch(e) {
-            resendLink.textContent = 'আবার পাঠান';
-            showError('নেটওয়ার্ক সমস্যা');
-        }
-    }
-
-    // ===== Verify OTP =====
-    async function verifyOtp() {
-        const otp = getOtpValue();
-
-        if (otp.length < 6) {
-            showError('অনুগ্রহ করে ৬ ডিজিটের কোড দিন');
-            return;
-        }
-
-        const phone = localStorage.getItem('phone');
-        const ref = localStorage.getItem('ref');
-        const btn = document.getElementById('auth-btn');
-        const loader = document.getElementById('loader');
-
-        btn.disabled = true;
-        loader.classList.add('visible');
-        hideError();
-
-        try {
-            const res = await fetch('/auth/verify_otp.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    Otp: otp,
-                    referenceNo: ref,
-                    user_mobile: phone
-                })
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+                    otpDigits[idx - 1].focus();
+                    otpDigits[idx - 1].value = '';
+                    otpDigits[idx - 1].classList.remove('filled');
+                }
             });
 
-            const data = await res.json();
-
-            if (data.statusCode === 'S1000') {
-                localStorage.setItem('isLoggedIn', true);
-                // Show success animation
-                const overlay = document.getElementById('success-overlay');
-                overlay.classList.add('visible');
-                setTimeout(() => {
-                    if (!localStorage.getItem('29card_profile')) {
-                        window.location.href = "name_setup.html";
-                    } else {
-                        window.location.href = "../index.html";
+            // Handle paste
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+                pasted.split('').forEach((char, i) => {
+                    if (otpDigits[i]) {
+                        otpDigits[i].value = char;
+                        otpDigits[i].classList.add('filled');
                     }
-                }, 1200);
-            } else {
-                showError(data.message || 'OTP ভুল হয়েছে, আবার চেষ্টা করুন');
-                otpDigits.forEach(d => {
-                    d.value = '';
-                    d.classList.remove('filled');
                 });
-                otpDigits[0].focus();
-            }
-        } catch(e) {
-            console.error('OTP verification error:', e);
-            if (e.message && e.message.includes('Failed to fetch')) {
-                showError('ইন্টারনেট সমস্যা। AdBlocker/VPN বন্ধ করুন।');
-            } else {
-                showError('নেটওয়ার্ক ত্রুটি: ' + e.message);
-            }
-        } finally {
-            btn.disabled = false;
-            loader.classList.remove('visible');
+                if (pasted.length === 6) {
+                    otpDigits[5].focus();
+                    verifyOtp();
+                } else if (pasted.length > 0) {
+                    otpDigits[Math.min(pasted.length, 5)].focus();
+                }
+            });
+
+            // Focus animation
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('focused');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('focused');
+            });
+        });
+
+        function getOtpValue() {
+            return Array.from(otpDigits).map(d => d.value).join('');
         }
-    }
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.classList.add('visible');
+            otpDigits.forEach(d => d.classList.add('error'));
+        }
+
+        function hideError() {
+            errorMsg.classList.remove('visible');
+            otpDigits.forEach(d => d.classList.remove('error'));
+        }
+
+        // ===== Resend Timer =====
+        let resendSeconds = 30;
+        const resendLink = document.getElementById('resend-link');
+        const resendTimer = document.getElementById('resend-timer');
+
+        function toBengaliNum(n) {
+            const bn = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            return String(n).split('').map(d => bn[parseInt(d)] || d).join('');
+        }
+
+        function startResendTimer() {
+            resendSeconds = 30;
+            resendLink.classList.add('disabled');
+            resendTimer.style.display = 'inline';
+
+            const interval = setInterval(() => {
+                resendSeconds--;
+                const mins = String(Math.floor(resendSeconds / 60)).padStart(2, '0');
+                const secs = String(resendSeconds % 60).padStart(2, '0');
+                resendTimer.textContent = `(${toBengaliNum(mins)}:${toBengaliNum(secs)})`;
+
+                if (resendSeconds <= 0) {
+                    clearInterval(interval);
+                    resendLink.classList.remove('disabled');
+                    resendTimer.style.display = 'none';
+                }
+            }, 1000);
+        }
+
+        startResendTimer();
+
+        async function resendOtp() {
+            const phone = localStorage.getItem('phone');
+            if (!phone) return;
+
+            resendLink.textContent = 'পাঠানো হচ্ছে...';
+
+            try {
+                const res = await fetch('https://boardgame.rtsquad.com/auth/send_otp.php', {
+                    method: 'POST',
+                    body: new URLSearchParams({ user_mobile: phone })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    localStorage.setItem('ref', data.referenceNo);
+                    resendLink.textContent = 'আবার পাঠান';
+                    startResendTimer();
+                } else {
+                    resendLink.textContent = 'আবার পাঠান';
+                    showError(data.message || 'পাঠাতে ব্যর্থ');
+                }
+            } catch (e) {
+                resendLink.textContent = 'আবার পাঠান';
+                showError('নেটওয়ার্ক সমস্যা');
+            }
+        }
+
+        // ===== Verify OTP =====
+        async function verifyOtp() {
+            const otp = getOtpValue();
+
+            if (otp.length < 6) {
+                showError('অনুগ্রহ করে ৬ ডিজিটের কোড দিন');
+                return;
+            }
+
+            const phone = localStorage.getItem('phone');
+            const ref = localStorage.getItem('ref');
+            const btn = document.getElementById('auth-btn');
+            const loader = document.getElementById('loader');
+
+            btn.disabled = true;
+            loader.classList.add('visible');
+            hideError();
+
+            try {
+                const res = await fetch('https://boardgame.rtsquad.com/auth/verify_otp.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        Otp: otp,
+                        referenceNo: ref,
+                        user_mobile: phone
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.statusCode === 'S1000') {
+                    localStorage.setItem('isLoggedIn', true);
+                    // Show success animation
+                    const overlay = document.getElementById('success-overlay');
+                    overlay.classList.add('visible');
+                    setTimeout(() => {
+                        if (!localStorage.getItem('29card_profile')) {
+                            window.location.href = "name_setup.html";
+                        } else {
+                            window.location.href = "../index.html";
+                        }
+                    }, 1200);
+                } else {
+                    showError(data.message || 'OTP ভুল হয়েছে, আবার চেষ্টা করুন');
+                    otpDigits.forEach(d => {
+                        d.value = '';
+                        d.classList.remove('filled');
+                    });
+                    otpDigits[0].focus();
+                }
+            } catch (e) {
+                console.error('OTP verification error:', e);
+                if (e.message && e.message.includes('Failed to fetch')) {
+                    showError('ইন্টারনেট সমস্যা। AdBlocker/VPN বন্ধ করুন।');
+                } else {
+                    showError('নেটওয়ার্ক ত্রুটি: ' + e.message);
+                }
+            } finally {
+                btn.disabled = false;
+                loader.classList.remove('visible');
+            }
+        }
     </script>
 </body>
+
 </html>
